@@ -1,0 +1,206 @@
+\documentclass{article}
+
+\usepackage[dark,showauthor]{../../../classes/dim}
+\setcounter{week}{2}
+
+\begin{document}
+    \header{Introduction to Optimization}{Homework \arabic{week}}
+
+    \begin{tasks}
+        \section*{Homework Assignment {\color{faded}Not graded}}
+        \begin{enumerate}[label={\color{tcum}P \arabic{week}.\arabic*}]
+            \item {\begin{enumerate}
+                    \item First calculate the gradient
+                        \begin{displaymath}
+                            f(x_1, x_2) = (4x_1^2-x_2)^2 = 16x_1^4 - 8x_1^2x_2 + x_2^2 \implies \nabla f(x_1, x_2) = \langle 64x_1^3-16x_1x_2, -8x_1^2+2x_2\rangle
+                        \end{displaymath}
+                        At stationary points, \(\nabla f(x) = 0\)
+                        \begin{displaymath}
+                            \nabla f(x_1, x_2) = \langle64x_1^3-16x_1x_2, -8x_1^2+2x_2\rangle = 0 \implies
+                            \begin{cases}
+                                64x_1^3-16x_1x_2 = 0\\
+                                -8x_1^2+2x_2 = 0
+                            \end{cases}
+                            \implies
+                            4x_1^2=x_2.
+                        \end{displaymath}
+                        At such points, \(f(u, 4u^2) = 0\)
+                        This means that all points \(\{(u, 4u^2) : u\in\R{}\}\) are stationary points.
+                        \begin{displaymath}
+                            H_f(x_1, x_2) = \mat{192x_1^2-16x_2 & -16x_1 \\ -16x_1 & 2}
+                            \implies
+                            H_f(u, 4u^2) = 2\mat{64u^2 & -8u \\ -8u & 1},\ \det(H_f(u, 4u^2)) = 0
+                        \end{displaymath}
+                        so second derivative test is not suitable for this example. If we let \(d\in\R{2}\) be an arbitrary non-zero vector we can write
+                        \begin{displaymath}
+                            \begin{aligned}
+                                f(x+d) 
+                                &= (4(x_1+d_1)^2-(x_2+d_2))^2 \\
+                                &= (4x_1^2-x_2+8x_1d_1+4d_1^2-d_2)^2 \\
+                                &= (4x_1^2-x_2)^2+2(4x_1^2-x_2)(8x_1d_1+4d_1^2-2x_2d_2-d_2^2)+(8x_1d_1+4d_1^2-2x_2d_2-d_2^2)^2 \\
+                            \end{aligned}
+                        \end{displaymath}
+                        and in the case where \(4x_1^2=x_2\) we get that
+                        \begin{displaymath}
+                            \begin{aligned}
+                                f(x+d) 
+                                &= (4x_1^2-x_2)^2+2(4x_1^2-x_2)(8x_1d_1+4d_1^2-2x_2d_2-d_2^2)+(8x_1d_1+4d_1^2-2x_2d_2-d_2^2)^2 \\
+                                &= 0+0+(8x_1d_1+4d_1^2-2x_2d_2-d_2^2)^2 \\
+                                &\ge 0
+                            \end{aligned}
+                        \end{displaymath}
+                        therefore the minimum of \(f\) is \(0\) and is attained at points \(\{(u, 4u^2) : u\in\R{}\}\). 
+                \end{enumerate}}
+
+
+            \item \label{proof:cnvx} Let \(S = \{x \in \R{n}: f(x) \le f(y)\}\) be a sub-level set for some \(y\) and \(a, b \in S\) such that \(f(a) = f(b)\). Since \(f\) is convex, i.e. 
+                \((1-\lambda)f(a) + \lambda f(b) \ge f((1-\lambda)a + \lambda b)\) if some \(c\) is on the line between \(a\) and \(b\), \(f(c) \le f(a) = f(b)\) meaning that if \(S\) contains \(a\) and \(b\) it will also contain \(c\). 
+            \item \begin{enumerate}
+                    \item \begin{proof}
+                            \begin{displaymath}
+                                \begin{aligned}
+                                    f(g((1-\lambda)a+\lambda b)) &\le
+                                    f((1-\lambda)g(a) + \lambda g(b)) & \text{\color{faded}(by convexity and monotonousity)} \\
+                                    &\le (1-\lambda)f(g(a)) + \lambda f(g(a))
+                                \end{aligned}
+                            \end{displaymath}
+                        \end{proof}
+                    \item Let \(f(x) = e^{-x}, g(x) = x^2, f(g(x)) = e^{-x^2}\). At points \(-1, 1\) value of the function is \(f(g(-1)) = f(g(1)) = e^{-1}\) which is evidently less than the value at \(0\) which is \(f(g(0)) = e^0\) therby contradicting the convexity.
+                \end{enumerate}
+            \item Let \(\bar{x}\) and \(\bar{y}\) be the optimizers of the problem and \(\lambda \in (0, 1)\). Then, by convexity of \(f(x)\), we know that any point \(c = (1-\lambda)x+\lambda y\) gives us 
+            \begin{displaymath}
+                f(c) \le (1-\lambda)f(x)+\lambda f(y) = f(x) = f(y)
+            \end{displaymath}
+            and since \(f(x) \le f(a)\ \forall\ a \in K\) we get that \(f(c) = f(x) = f(y)\) thereby \(c \in \{x\in K : f(x) \le f(y)\ \forall\ y\in K\}\).
+        \end{enumerate}
+        \vspace*{16pt}
+        \section*{Graded Homework Assignment}
+        \begin{enumerate}[label={\color{tcum}P \Roman{week}.\arabic*}]
+            \item \begin{displaymath}
+                    f(x_1, x_2) = x_1^2 - 5x_1x_2^2 + 5x_2^4
+                \end{displaymath}
+                \begin{enumerate}
+                    \item \label{roots} To determine all stationary points of \(f\), first
+                        we find 
+                        \begin{displaymath}
+                            \nabla f(x_1, x_2) = (2x_1 - 5x_2^2, -10x_1x_2+20x_2^3)
+                        \end{displaymath}
+                        then we find such \((x_1, x_2)\) that \(\nabla f(x_1, x_2) = 0\)
+                        \begin{displaymath}
+                            \begin{cases}
+                                2x_1 - 5x_2^2 = 0 \\
+                                -10x_1x_2 + 20x_2^3 = 0
+                            \end{cases}
+                            \implies
+                            \begin{cases}
+                                2x_1 - 5x_2^2 = 0 \\
+                                -x_1 + 2x_2^2 = 0
+                            \end{cases}
+                            \implies
+                            \begin{cases}
+                                x_1 = 0 \\
+                                x_2 = 0
+                            \end{cases}
+                        \end{displaymath}
+                    \item \begin{itemize}
+                            \item \(f(x_1, 0) = x_1^2\). \(\bar{x}_1 = 0\) is a global minimizer
+                                since \(0^2 \le x_1^2\) for all \(x_1\).
+                            \item \(f(0, x_2) = 5x_2^4\). \(\bar{x}_2 = 0\) is a global minimizer
+                                since \(5\cdot0^4 \le 5\cdot x_2^4\) for all \(x_2\).
+                        \end{itemize}
+                    \item From \ref{roots} we know that \(\bar{x} = 0\) is a stationary 
+                        point. We need to find the Hessian of \(f\)
+                        \begin{displaymath}
+                            H_f(x_1, x_2) = \mat{2 & -10x_2 \\ -10x_2 & -10x_1 + 60x_2^2}
+                        \end{displaymath}
+                        Now we just plug in \(\bar{x} = 0\)
+                        \begin{displaymath}
+                            H_f(0, 0) = \mat{2 & 0 \\ 0 & 0}
+                        \end{displaymath}
+                        then we find the eighenvalues
+                        \begin{displaymath}
+                            \det(H_f - \lambda I)
+                            = \lambda(2-\lambda) 
+                            = 0 \implies \lambda 
+                            = 0, 2.
+                        \end{displaymath}
+                        This means that \(H_f(0,0)\) is positive semi-definite and that doesn't tell us anything about the class of the stationary point. From \cref{plot:onec} it's clear that the point is not a minimizer but a saddle point.
+
+                        If we pick an arbitrary direction \(d\in\R{n}\) and some \(\delta > 0\) we'll have \(\bar x + t d \in B_\epsilon(\bar x)\ \forall t\in[-\delta,\delta]\). Next, performing the taylor expansion gives 
+                        \begin{displaymath}
+                            \begin{aligned}
+                                f(\bar x+td) 
+                                &= \underbrace{f(\bar x)}_{=0} + \underbrace{\nabla f(\bar x)^Ttd}_{=0} + \frac{1}{2}td^T H_f(\bar x) td + \rho(t) \\
+                                &= \frac{t^2}{2}d^T H_f(\bar x)
+                                d + \rho(t) \\
+                            \end{aligned}
+                        \end{displaymath}
+                        \begin{figure}[H]
+                            \centering
+                            \includegraphics{2-1-1.eps}
+                            \caption{plot of \(f\) near \((0,0)\)}
+                            \label{plot:onec}
+                        \end{figure}
+                \end{enumerate}
+            \item \begin{itemize}
+                    \item \(f\) is bounded below \(\impliedby b \in \{Ay : y \in \R{n}\}\)
+                        \begin{displaymath}
+                            \begin{aligned}    
+                                f(x) 
+                                &= x^TAx + 2b^Tx + c \\
+                                &= x^TAx + 2y^TAx + c & {\color{faded}\text{ let }b = Ay}\\
+                                &= \langle A^{\frac{1}{2}}(x + y), A^{\frac{1}{2}}(x + y)\rangle - y^TAy + c \\
+                                &= \underbrace{(x+y)^TA(x+y)}_{\ge 0} - \underbrace{y^TAy + c}_{\text{constant}} \\
+                                &\ge -y^TAy + c
+                            \end{aligned}
+                        \end{displaymath}
+                    \item \(f\) is bounded below \(\implies b \in \{Ay : y \in \R{n}\}\)
+                        Since \(A\) is positive {\color{white}semi}-definite and not positive definite, \(\det(A) = 0\) and \(\ker(A) \ne \{0\}\). If we let \(x\in\ker(A)\) we get
+                        \begin{displaymath}
+                            \begin{aligned}    
+                                f(x) 
+                                &= x^TAx + 2b^Tx + c \\
+                                &= 0 + 2b^Tx + c.
+                            \end{aligned}
+                        \end{displaymath}
+                        From here we observe that if \(b\) were to be of the form \(Ay\) we would have
+                        \begin{displaymath}
+                            \begin{aligned}    
+                                f(x) 
+                                &= 2b^Tx + c \\
+                                &= 2y^TAx + c \\
+                                &= 0 + c
+                            \end{aligned}
+                        \end{displaymath}
+                        but otherwise, \(f(x)\) would be a linear function in respect to \(x\) which is not bounded from below.
+                \end{itemize}
+            \item \begin{enumerate}[label={\color{tcum}\arabic*.}]
+                    \item Let \(a = (1, 0)\) and \(b = (-1, 0)\), \(\|a\|^2 = \|b\|^2 = 1\) therefore \(a, b \in A\). The midpoint is \(c = (0, 0)\) has \(\|c\|^2 = 0 \implies c \not \in A\). \(A\) is not convex.
+                    \item In \ref{proof:cnvx} I proved that level sets of a convex function are convex and all norms are convex, therefore the sub-level set \(\{x\in\R{n}:\max_{i=1,2,\dots,n}x_i\le1\} = \{x\in\R{n}:\|x\|_{\infty}\le1\}\) is convex.
+                    \item Let \(a = (10, 0)\) and \(b = (0, 10)\), \(\min a = \min b = 0 \le 1\) therefore \(a, b \in C\). The midpoint is \(c = (5, 5)\) has \(\min c = 5 \not\le 1 \implies c \not \in C\). \(C\) is not convex.
+                \end{enumerate}
+            \item \begin{itemize}
+                    \item \(f\) is convex \(\implies\) \(g_{x,d}\) is convex.
+                    \begin{displaymath}
+                        \begin{aligned}
+                            g_{x,d}((1-\lambda)a+\lambda b)
+                            &= f(x+((1-\lambda)a+\lambda b)d) \\
+                            &= f((1-\lambda)(x+ad)+\lambda(x+bd)) \\
+                            &\le (1-\lambda)f(x+ad)+\lambda f(x+bd) \\
+                            &= (1-\lambda)g_{x,d}(a) + \lambda g_{x,d}(b)
+                        \end{aligned}
+                    \end{displaymath}
+
+                    \item \(f\) is convex \(\impliedby\) \(g_{x,d}\) is convex.
+                    \begin{displaymath}
+                        \begin{aligned}
+                            f((1-\lambda)a+\lambda b) 
+                            &= g_{a,b-a}((1-\lambda)\cdot0 + \lambda\cdot1) \\
+                            &\le (1-\lambda)g_{a,b-a}(0) + \lambda g_{a,b-a}(1) \\
+                            &= (1-\lambda)f(a) + \lambda f(b)
+                        \end{aligned}
+                    \end{displaymath}
+                \end{itemize}
+        \end{enumerate}
+    \end{tasks}
+\end{document}

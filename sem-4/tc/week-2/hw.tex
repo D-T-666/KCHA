@@ -1,0 +1,65 @@
+\documentclass{article}
+
+\usepackage[dark,showauthor]{../../../classes/dim}
+
+\begin{document}
+    \header{Theory of Computation}{Week two}
+
+    \begin{tasks}
+        \begin{enumerate}
+            \item 
+            \item \begin{enumerate}[label={\color{tcum}(\arabic*)}]
+                    \item The NFA would be described as
+                        \begin{displaymath}
+                            \begin{aligned}
+                                M &= (Z, A, \delta, z_0, Z_A) \\
+                                Z &= \{z_0, z_1, z_2, z_3, z_4\} \\
+                                A &= \{a, b\} \\
+                                \delta(z_0, a) &= \{z_0, z_3\} \\
+                                \delta(z_0, b) &= \{z_0, z_1\} \\
+                                \delta(z_1, a) &= \{\} \\
+                                \delta(z_1, b) &= \{z_2\} \\
+                                \delta(z_2, a) &= \{z_2\} \\
+                                \delta(z_2, b) &= \{z_2\} \\
+                                \delta(z_3, a) &= \{z_4\} \\
+                                \delta(z_3, b) &= \{\} \\
+                                \delta(z_4, a) &= \{z_4\} \\
+                                \delta(z_4, b) &= \{z_4\} \\
+                                Z_A &= \{z_2, z_4\}
+                            \end{aligned}
+                        \end{displaymath}
+                    \item \(M\) accepts all words that contain at least one {\color{hilight}\verb|a|} followed by another {\color{hilight}\verb|a|} or a {\color{hilight}\verb|b|} followed by another {\color{hilight}\verb|b|}
+                \end{enumerate}
+            \item \mbox{}
+                \begin{figure}[H]
+                    \centering
+                    \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto,double=background]
+                        \node[state,initial,accepting,color=tcum] (z_0) {$z_0$};
+                        \node[state] (z_1) [above right=of z_0] {$z_1$};
+                        \node[state] (z_2) [above right=of z_1] {$z_2$};
+                        \node[state] (z_3) [below right=of z_2] {$z_3$};
+                        \node[state] (z_4) [below right=of z_0] {$z_4$};
+                        \node[state] (z_5) [below right=of z_4] {$z_5$};
+                        \node[state] (z_8) [above right=of z_5] {$z_8$};
+                        \node[state] (z_6) [below right=of z_8] {$z_6$};
+                        \node[state] (z_7) [above right=of z_6] {$z_7$};
+        
+                        \path[->] 
+                            (z_0) 
+                                edge node {1} (z_1)
+                                edge node {1} (z_4)
+                            (z_1) edge node {1} (z_2)
+                            (z_2) edge node {1} (z_3)
+                            (z_3) edge node {1} (z_1)
+                            (z_4) edge node {1} (z_5)
+                            (z_5) edge node {1} (z_6)
+                            (z_6) edge node {1} (z_7)
+                            (z_7) edge node {1} (z_8)
+                            (z_8) edge node {1} (z_4)
+                        ;
+                    \end{tikzpicture}
+                    \caption[short]{NFA that accepts \(L=\{1^i:i\equiv0\mod3\}\cup\{1^i:i\equiv0\mod5\}\)}
+                \end{figure}
+        \end{enumerate}
+    \end{tasks}
+\end{document}

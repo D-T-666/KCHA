@@ -1,0 +1,36 @@
+body {
+    width: 100%;
+    height: 100%;
+    background-color: #fff8f8;
+}
+
+main {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+label {
+    margin: 0 1em;
+}
+
+label.big-input {
+    display: flex;
+    flex-direction: column;
+}
+
+label.big-input >  {
+    display: flex;
+    flex-direction: column;
+}

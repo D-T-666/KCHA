@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .hilighted {
+            background-color: blue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <b id="oee">bold words</b>
+    <a href="#" id="certainlink">a certain link</a>
+    <script>
+        certainlink.addEventListener("mouseenter", () => {
+            oee.classList.add("hilighted")
+        })
+        certainlink.addEventListener("mouseleave", () => {
+            oee.classList.remove("hilighted")
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <div>
+            <h1>Survey form</h1>
+
+            <form>
+                <label for="name" class="big-input">
+                    name
+                    <input type="text" id="name" name="name" placeholder="Enter your name, e.g. John Doe">
+                </label>
+
+                <label for="email" class="big-input">
+                    email
+                    <input type="email" id="email" name="email" placeholder="Enter your email, e.g. example@company.com">
+                </label>
+
+                <label for="age" class="big-input">
+                    age
+                    <input type="number" id="age" name="age" min="1" placeholder="Enter your age, e.g. 21">
+                </label>
+
+                <label>Are you satisfied with the company?
+                    <select id="satisfaction">
+                        <option>yes</option>
+                        <option>no</option>
+                        <option>maybe</option>
+                        <option>don't care</option>
+                    </select>
+                </label>
+
+
+                What would you chang about the company?
+                <div class="row">
+                    <label for="staff">
+                        <input type="radio" name="change" id="staff" value="Staff">
+                        Staff
+                    </label>
+
+                    <label for="ceo">
+                        <input type="radio" name="change" id="ceo" value="CEO">
+                        CEO
+                    </label>
+                    
+                    <label for="marketing">
+                        <input type="radio" name="change" id="marketing" value="Marketing">
+                        Marketing
+                    </label>
+                </div>
+
+                What do you value the most?
+                <div class="row">
+                    <label for="responsibility">
+                        <input type="checkbox" name="value" id="responsibility" value="Responsibility">
+                        Responsibility
+                    </label>
+                    <label for="time">
+                        <input type="checkbox" name="value" id="time" value="Time">
+                        Time
+                    </label>
+                    <label for="money">
+                        <input type="checkbox" name="value" id="money" value="Money">
+                        Money
+                    </label>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

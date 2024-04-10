@@ -1,0 +1,29 @@
+:root {
+    --description-color: #9e6f21;
+}
+
+.text {
+    color: brown;
+}
+
+.sub-text {
+    color: grey;
+}
+
+p.description {
+    color: var(--description-color)
+}
+
+h1 {
+    font-family: Arial;
+    font-size: 36px;
+    font-weight: 600;
+    font-style: italic;
+}
+
+p {
+    font-family: Georgia;
+    font-size: 18px;
+    font-weight: 400;
+    font-style: normal;
+}

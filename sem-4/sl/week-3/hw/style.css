@@ -1,0 +1,31 @@
+.card {
+    width: 16em;
+    border: 1px solid black;
+    border-radius: 1em;
+    box-sizing: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1em;
+    background-image: url("media/dirt.jpg");
+    background-size: 5em;
+    background-position: center;
+}
+.card > img {
+    width: 100%;
+}
+
+.card > .post-info {
+    width: 70%;
+}
+
+.card > .post-info > button {
+    background-color: dodgerblue;
+    color: white;
+    border: none;
+    font-size: 1em;
+    padding: 0.3em;
+    border-radius: 2pt;
+}
