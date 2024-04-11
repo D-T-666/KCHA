@@ -63,11 +63,11 @@
 ]
 #solution[
   + 
-    // #figure(
-    //   box(radius: 1em, clip: true, stroke: theme.fg + 0.5pt, image("lecture.jpg")),
-    //   caption: [slide 15 of 08-turing-machines],
-    //   gap: 6pt
-    // )
+    #figure(
+      box(radius: 1em, clip: true, stroke: theme.fg + 0.5pt, image("lecture.jpg")),
+      caption: [slide 15 of 08-turing-machines],
+      gap: 6pt
+    )
     #let zz = text(fill: theme.tcum, $z$)
     #let zzz = text(fill: theme.tcum, $z'$)
     We can take the set of configurations to be $ K_2 =(A^* circle.small Z 
