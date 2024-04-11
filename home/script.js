@@ -59,7 +59,7 @@ function layout(data) {
 }
 
 (function() {
-    starIcon.src = Math.random() > 0.3 ? "star.svg" : "star.png"
+    starIcon.src = "home/" + (Math.random() > 0.3 ? "star.svg" : "star.png")
 
     fetch("data.json")
         .then(response => response.json())
