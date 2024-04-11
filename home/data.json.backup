@@ -1,0 +1,30 @@
+{
+    "data": [
+        {
+            "name": "sem-4",
+            "contents": [
+                {
+                    "name": "tc",
+                    "contents": [
+                        {
+                            "name": "week-7",
+                            "new": true,
+                            "contents": {
+                                "tasks": "/sem-4/tc/week-7/tasks.pdf",
+                                "hw": "/sem-4/tc/week-7/hw.pdf"
+                            }
+                        },
+                        {
+                            "name": "week-6",
+                            "contents": {
+                                "tasks": "/sem-4/tc/week-6/tasks.pdf",
+                                "hw": "/sem-4/tc/week-6/hw.pdf"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "update-date": "Thursday 11-04-2024"
+}
