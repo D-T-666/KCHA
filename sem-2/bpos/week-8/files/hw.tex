@@ -1,0 +1,175 @@
+\documentclass{article}
+
+\usepackage[margin=3cm,top=3cm]{geometry}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{svg}
+\usepackage{fancyvrb}
+\usepackage{hyperref}
+\usepackage{refcount}
+\usepackage{mips}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{keyword}{rgb}{0.1,0.1,0.4}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{red}{rgb}{0,0.7,0.3}
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{keyword},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    showspaces=false,
+    showstringspaces=false,
+    frame=single,
+    numbersep=1.5em,
+    tabsize=6,
+	belowskip=0em
+}
+
+\lstset{language=[mips]Assembler}
+\lstset{style=mystyle}
+
+\title{BPOS: Excercises for week 8}
+\author{student: Dimitri Tabatadze (group: G3)}
+
+\begin{document}
+    \maketitle
+	\pagebreak
+
+    \section*{Solutions}
+
+    \begin{enumerate}
+        \item {
+			\begin{enumerate}
+				\item {
+					\begin{displaymath}
+						\begin{aligned}
+							ba(a, c^0) &= sbase \\
+							ba(b, c^0) &= sbase + 4 \\
+							va(a, c^1) &= 256 \\
+							d^0.m(lv(a, c)) &= enc(va(a, c^1), int) = enc(256, int) \\
+							d^1.gpr(1) &= enc(va(a, c^1), int) = enc(256, int) \\
+							d^2.gpr(2) &= ba(b, c^1) = sbase + 4 = d^1.gpr(28) + 4 && \text{\footnotesize without affecting register 1.} \\
+							d^3.gpr(1) &= 0^4d^2.gpr(1)[31:4] = enc(16, int) && \text{\footnotesize code line number 11.} \\
+							d.m(d^3.gpr(2)) &= d^3.gpr(1) = enc(16, int) && \text{\footnotesize $(d, c)$ is the desired configuration.} \\
+							enc(va(b, c), int) &= d.m(d^3.gpr(2)) = enc(16, int) \\
+							\implies va(b, c) &= 16 
+						\end{aligned}
+					\end{displaymath}
+				}
+				\item {
+					no, since register 1 might get used by the statement
+					\begin{lstlisting}
+	gpr(2) = b&
+\end{lstlisting}
+					and the value 256 (which later becomes 16 because of the \verb|srl| instruction in the \verb|asm| block) would get lost. 
+				}
+			\end{enumerate}
+		}
+        \item {
+			\begin{displaymath}
+				\begin{aligned}
+					\langle Reg \rangle \rightarrow\ &  {\verb|0|\ |\ \verb|1|\ |\ \dots|\ \verb|30|\ |\ \verb|31|} \\
+					\langle RegS\rangle \rightarrow\ & \langle Reg\rangle\ |\ \langle Reg\rangle\verb|,|\langle RegS\rangle & \text{we could use \texttt{;} instead of \texttt{,}} \\
+					\langle St\rangle \rightarrow\ & \verb|gpr(|\langle Reg\rangle\verb|) = |\langle E\rangle \verb| {|\langle RegS\rangle\verb|}| \ | & \text{Adding new productions}\\
+					& \langle id\rangle\verb| = gpr(|\langle Reg\rangle\verb|) {|\langle RegS\rangle\verb|}|
+				\end{aligned}
+			\end{displaymath}
+		}
+        \item {
+			From Lemma 93 I use only
+			\begin{displaymath}
+				d^k.gpr(j_5) = 
+				\begin{cases}
+					ba(va(e,c),c), & R(i) = 1 \land pointer(t) \land va(e,c)\neq null, \\
+					enc(va(e,c),t), & R(i) = 1 \land t \in ET
+				\end{cases}
+			\end{displaymath}
+			since $R(n') = 1$ is given where $n'$ is the node of the expression $e$ in the derivation tree. Let $j'$ be the pebble with the value of $n'$.
+			\begin{displaymath}
+				d''.gpr(j') = 
+				\begin{cases}
+					ba(va(e,c),c), & R(n') = 1 \land pointer(t) \land va(e,c)\neq null, \\
+					enc(va(e,c),t), & R(n') = 1 \land t \in ET
+				\end{cases}
+			\end{displaymath}
+			Since the last instruction is {\verb|addi j j' 0|}, $d''.gpr(j) = d''.gpr(j')$, so
+			\begin{displaymath}
+				d''.gpr(j) = 
+				\begin{cases}
+					ba(va(e,c),c), & pointer(t) \land va(e,c)\neq null, \\
+					enc(va(e,c),t), & t \in ET
+				\end{cases}
+			\end{displaymath}
+			
+			Lemma 94:
+			\begin{displaymath}
+				d \rightarrow^*_{code(n,J)} d' \land j \in J \rightarrow d.gpr(j_5) = d'.gpr(j_5)
+			\end{displaymath}
+			where
+			\begin{displaymath}
+				J \subset [1:27]
+			\end{displaymath}
+
+			\pagebreak
+			
+			Let's prove that $i \in J \rightarrow d.gpr(i) = d''.gpr(i)$. $d \rightarrow_{code(n,J)} d''$ where $code(n, J)$ is
+			\begin{lstlisting}[numbers=none,language=]
+code(n', J)
+addi j j' 0
+\end{lstlisting}
+			It's obvious that $j \not\in J$ and given that $code(n', J)$ won't affect $J$ (from Lemma 94) and the last instruction of $code(n, J)$, \ \verb|addi j j' 0| \ won't change anything but the register $j$ so the set $J$ will remain unchanged.
+
+			Lemma 127 suggests that the registers $i \in [28:31]$ always remain unchanged. However the syntax for C+A doesn't forbid us from accessing the those registers.
+		}
+        \item \begin{enumerate}
+			\item {\hspace*{1em}
+				\begin{minipage}[t]{0.5\linewidth}
+					\begin{lstlisting}[language=c,tabsize=2]
+uint x;
+
+int main() {
+	x = 0;
+	gpr(1) = x&;
+	while (x < 10) {
+		asm(
+			addi 1 1 1
+		)
+	};
+	return 0
+}
+\end{lstlisting}
+				\end{minipage}
+			}
+			\item {Only 1 step is needed. After one step, the whole while block will be loaded --- the start of the node of the while loop will be the 2nd next step}
+			\item {\hspace*{1em}
+				\begin{minipage}[t]{0.5\linewidth}
+					\begin{lstlisting}[language=c,tabsize=2]
+int x;
+
+int main() {
+	x = 0;
+	gpr(1) = x&;
+	while (x < 10) {
+		if (x < 9) {
+			asm(
+				addi 1 1 1
+			)
+		} else {
+			x = 0
+		}
+	};
+	return 0
+}
+\end{lstlisting}
+				\end{minipage}
+			}
+		\end{enumerate}
+    \end{enumerate}
+\end{document}

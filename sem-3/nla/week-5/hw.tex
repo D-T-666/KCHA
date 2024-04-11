@@ -1,0 +1,106 @@
+\documentclass{article}
+
+\usepackage{../../classes/kiu}
+
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
+\definecolor{lightgray}{RGB}{250, 160, 160}
+
+\DeclareMathOperator{\adj}{adj}
+
+\begin{document}
+    \kiuheader{Homework 6}
+    {Numerical Linear Algebra}
+    {Dimitri Tabatadze}
+
+    \begin{enumerate}
+        \item {
+            \begin{itemize}
+                \item raw \( = 3.1415926\dots\)
+                \item chopped at 5 digits \(= 3.1415\)
+                \item rounded at 5 digits \(= 3.1416\)
+            \end{itemize}
+        }
+        \item {
+            \begin{enumerate}
+                \item {
+                    \begin{itemize}
+                        \item absolute error \(= |\hat{x} - x| = 0.1\cdot10^{-4}\)
+                        \item relative error \(= \frac{|\hat{x} - x|}{|x|} = \frac{0.1\cdot10^{-4}}{0.3\cdot10^{-3}} = \frac{1}{30}\)
+                    \end{itemize}
+                }
+                \item {
+                    \begin{itemize}
+                        \item absolute error \(= |\hat{x} - x| = |40320 - 39900| = 420\) %{\color{gray}(nice)}
+                        \item relative error \(= \frac{|\hat{x} - x|}{|x|} = \frac{420}{39900} = \frac{1}{95}\)
+                    \end{itemize}
+                }
+            \end{enumerate}
+        }
+        \item {
+            \begin{itemize}
+                \item \begin{itemize}
+                    \item \(x+y = \frac{5}{7} + \frac{1}{3} = \frac{22}{21} = 1.047619\dots\).
+                    \item Chopped \(= 1.0476\).
+                    \item Absolute error \(= \frac{22-21\cdot1.0476}{21} = \frac{22-21.9996}{21} = \frac{0.0004}{21} = \frac{4}{210000}\)
+                    \item Relative error \(= \frac{|\frac{4}{210000}|}{|\frac{22}{21}|} = \frac{2}{11000}\)
+                \end{itemize}
+                \item \begin{itemize}
+                    \item \(x-y = \frac{5}{7} - \frac{1}{3} = \frac{8}{21} = 0.380952\dots\).
+                    \item Chopped \(= 0.38095\).
+                    \item Absolute error \(= \frac{8-21\cdot0.38095}{21} = \frac{8-7.99995}{21} = \frac{0.00005}{21} = \frac{1}{4200000}\)
+                    \item Relative error \(= \frac{|\frac{1}{4200000}|}{|\frac{8}{21}|} = \frac{1}{1600000}\)
+                \end{itemize}
+                \item \begin{itemize}
+                    \item \(x\cdot y = \frac{5}{7} \cdot \frac{1}{3} = \frac{5}{21} = 0.2380952\dots\).
+                    \item Chopped \(= 0.23809\).
+                    \item Absolute error \(= \frac{5-0.23809\cdot21}{21} = \frac{5-4.99989}{21} = \frac{0.00011}{21} = \frac{11}{2100000}\)
+                    \item Relative error \(= \frac{|\frac{11}{2100000}|}{|\frac{5}{21}|} = \frac{11}{500000}\)
+                \end{itemize}
+                \item \begin{itemize}
+                    \item \(x/y = \left(\frac{5}{7}\right) / \left(\frac{1}{3}\right) = \frac{15}{7} = 2.1428571\dots\).
+                    \item Chopped \(= 2.1428\).
+                    \item Absolute error \(= \frac{15 - 2.1428\cdot7}{7} = \frac{15-14.9996}{7} = \frac{0.0004}{7} = \frac{1}{17500}\)
+                    \item Relative error \(= \frac{|\frac{1}{17500}|}{|\frac{15}{7}|} = \frac{1}{37500}\)
+                \end{itemize}
+            \end{itemize}
+        }
+        \item {
+            \(0.54617 + 0.54611 = 1.092{\color{lightgray}28}\). Absolute error \(= 0.00028\) and relative error \(= \frac{0.00028}{1.09228}\). The result has 4 significant digits.
+        }
+        \item {
+            \begin{enumerate}
+                \item \(\lim_{x\to0}f(x) = \lim_{x\to0}\frac{-x\sin x - \cos x}{-\cos x} = 1\)
+                \item \(f(0.1) = \frac{0.1\cos0.1-\sin0.1}{0.1-\sin0.1} = \frac{0.1\cdot0.9950-0.09983}{0.1-0.09983} = -\frac{0.00033}{0.00017} = -1.9411{\color{lightgray}76\dots}\)
+                \item \(f(0.1) = \frac{0.1(1-\frac{(0.1)^2}{2!})-(0.1-\frac{(0.1)^3}{3!})}{0.1-(0.1-\frac{(0.1)^3}{3!})} = \frac{\frac{(0.1)^3\cdot(2!-3!)}{3!\cdot2!}}{\frac{(0.1)^3}{3!}} = \frac{2!-3!}{2!} = \frac{-4}{2} = -2.0\)
+                \item \begin{itemize}
+                    \item For (b) the relative error \(= \frac{|-1.9989999 - (-1.9411)|}{|-1.9989999|} = \frac{1.9989999-1.9411}{1.9989999} = \frac{0.0578999}{1.9989999}\)
+                    \item For (c) the relative error \(= \frac{|-1.9989999 - (-2)|}{|-1.9989999|} = \frac{2 - 1.9989999}{1.9989999} = \frac{0.0010001}{1.9989999}\)
+                \end{itemize}
+            \end{enumerate}
+        }
+        \item {
+            \begin{enumerate}
+                \item \(13.0_{10} = 1101.0_2\)
+                \item \(\frac{3}{8} = 0.375_{10} = 0.011_{2}\)
+                \item \(1.32_{10} = 1.0101000111101\dots_2\)
+            \end{enumerate}
+        }
+        \item {
+            \begin{enumerate}
+                \item \(1+4+16+64 = 85\)
+                \item \(11.625\)
+                \item \(39.0 + \sum_{i=1}^{\infty} \frac{1}{4^i} = 39.\overline{3}\)
+            \end{enumerate}
+        }
+        \item {
+            \begin{enumerate}
+                \item \(-5_{10} = 11111011_2\)
+                \item \(-17_{10} = 11101111_2\)
+            \end{enumerate}
+        }
+        \item {
+            \(10011111 = 31 - 128 = -97\)
+        }
+    \end{enumerate}
+\end{document}

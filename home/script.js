@@ -1,57 +1,54 @@
+function createButton(name, data) {
+    let item = document.createElement("li");
+    item.classList.add("file");
+    let button = document.createElement("button");
+    button.innerText = "preview";
+    button.addEventListener("click", (e) => {
+        e.target.disabled = !e.target.disabled;
+        if (e.target.disabled) {
+            let viewer = document.createElement("embed");
+            viewer.src = data;
+            viewer.type = "application/pdf";
+            viewer.width = "100%";
+            viewer.height = "100%";
+            viewer.id = data;
+            e.target.parentElement.appendChild(viewer);
+        } else {
+            let viewer = 
+            document.getElementById(data);
+            viewer.parentElement.removeChild(viewer);
+        }
+        e.target.removeEventListener("click", null);
+    })
+    let link = document.createElement("a");
+    link.href = data;
+    link.innerText = "open externally";
+    item.append(name, " - ", link, " ", button);
+    return item;
+}
+
 function assemble(data, first = false) {
     let container = document.createElement("ul");
     if (!first)
         container.classList.add("nested")
-    for (let x of data) {
-        let node = document.createElement("li");
-        let name = document.createElement("h4");
-        name.innerText = x.name;
-        name.classList.add("caret");
-        if (x.new)
-            name.classList.add("new");
-        node.appendChild(name);
 
-        if (x.contents[0] != undefined) {
-            node.appendChild(assemble(x.contents));
+    for (let x of Object.keys(data).sort()) {
+        let node = document.createElement("li");
+        
+        if (typeof data[x] === 'string') {
+            node.appendChild(createButton(x, data[x]));
         } else {
-            let list = document.createElement("ul");
-            list.classList.add("file-list");
-            list.classList.add("nested");
-            for (let key of Object.keys(x.contents)) {
-                let item = document.createElement("li");
-                item.classList.add("file");
-                // item.classList.add("tcum");
-                let button = document.createElement("button");
-                button.innerText = "preview";
-                button.addEventListener("click", (e) => {
-                    e.target.disabled = !e.target.disabled;
-                    if (e.target.disabled) {
-                        let viewer = document.createElement("embed");
-                        viewer.src = x.contents[key];
-                        viewer.type = "application/pdf";
-                        viewer.width = "100%";
-                        viewer.height = "100%";
-                        viewer.id = x.contents[key];
-                        e.target.parentElement.appendChild(viewer);
-                    } else {
-                        let viewer = 
-                        document.getElementById(x.contents[key]);
-                        viewer.parentElement.removeChild(viewer);
-                    }
-                    e.target.removeEventListener("click", null);
-                })
-                let link = document.createElement("a");
-                link.href = x.contents[key];
-                link.innerText = "open externally";
-                item.append(key, " - ", link, " ", button);
-                list.appendChild(item);
-            }
-            node.appendChild(list);
+            let name = document.createElement("h4");
+            name.innerText = x;
+            node.appendChild(name);
+            name.classList.add("caret");
+            node.appendChild(assemble(data[x]));
         }
 
         container.appendChild(node);
     }
     return container
+
 }
 
 function layout(data) {

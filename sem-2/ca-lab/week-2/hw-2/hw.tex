@@ -1,0 +1,131 @@
+\documentclass{article}
+
+\usepackage{listings}
+
+\title{CA Lab: Homework 2}
+\author{student: Dimitri Tabatadze}
+
+\begin{document}
+    \maketitle
+
+    \section*{Task Description}
+
+    We should have written 4 MIPS programs, each evaluating different mathematical expressions. The user should have been able to input up to three variables (depending on the program) and the program should have output the result of the mathematical expression. The results should have been as accurate as possible.
+
+    \section*{Solution}
+
+    All four programs reuse the same part of the code, that is the I/O, so the instruction for inputing the numbers and outputing the result are basically the same for all files.
+
+    For inputing a single integer and storing it in a register \verb|$t0| I do
+    \begin{lstlisting}
+% la	$a0, x
+% li	$v0, 4
+% syscall
+% li	$v0, 5		# input integer
+% syscall
+% or	$t0, $v0, $zero	# store in $t0 (x)
+    \end{lstlisting}
+
+    For printing the string corresponding to the expression, I do
+    \begin{lstlisting}
+% la	$a0, expression
+% li	$v0, 4
+% syscall
+    \end{lstlisting}
+
+    For outputing the number stored in \verb|$a0|, I do
+    \begin{lstlisting}
+% li	$v0, 1		# print the value stored in $a0
+% syscall
+    \end{lstlisting}
+
+    The code for each calculation is the following.
+
+    \subsection*{a)}
+
+    variable map: \verb|$t0| \(=x\), \verb|$t1| \(=y\), \verb|$t2| \(=z\), \verb|$a0| \(=\langle\)final value\(\rangle\)
+    \begin{lstlisting}
+% add	$t3, $t0, $zero
+% mul	$t3, $t3, 5
+% add	$t4, $t1, $zero
+% mul	$t4, $t4, 3
+% add	$t3, $t3, $t4
+% add	$t3, $t3, $t2
+% add	$a0, $t3, $zero
+    \end{lstlisting}
+
+    The data looks like this:
+    \begin{lstlisting}
+% .data
+%     x:    .asciiz "x > "
+%     y:    .asciiz "y > "
+%     z:    .asciiz "z > "
+%     expression:   .asciiz "5x + 3y + z = "
+    \end{lstlisting}
+
+    \subsection*{b)}
+
+    variable map: \verb|$t0| \(=x\), \verb|$t1| \(=y\), \verb|$t2| \(=z\)
+    \begin{lstlisting}
+% add	$t3, $t0, $zero
+% mul	$t3, $t3, 5
+% add	$t4, $t1, $zero
+% mul	$t4, $t4, 3
+% add	$t3, $t3, $t4
+% add	$t3, $t3, $t2
+% div	$t3, $t3, 2
+% mul	$a0, $t3, 3
+    \end{lstlisting}
+
+    The data looks like this:
+    \begin{lstlisting}
+% .data
+%     x: .asciiz "x > "
+%     y: .asciiz "y > "
+%     z: .asciiz "z > "
+%     expression: .asciiz "((5x + 3y + z) / 2) * 3 = "
+    \end{lstlisting}
+
+    \subsection*{c)}
+
+    variable map: \verb|$t0| \(=x\)
+    \begin{lstlisting}
+% add	$t0, $v0, 2
+% mul	$t0, $t0, $v0
+% add	$t0, $t0, 3
+% mul	$t0, $t0, $v0
+% add	$a0, $t0, 4
+    \end{lstlisting}
+
+    The data looks like this:
+    \begin{lstlisting}
+% .data
+%     x: .asciiz "x > "
+%     expression: .asciiz "x^3 + 2x^2 + 3x + 4 = "
+    \end{lstlisting}
+
+    \subsection*{d)}
+
+    variable map: \verb|$t0| \(=x\), \verb|$t1| \(=y\)
+    \begin{lstlisting}
+% mul	$t2, $t0, 4
+% div	$t2, $t2, 3
+% mul	$a0, $t2, $t1
+    \end{lstlisting}
+
+    The data looks like this:
+    \begin{lstlisting}
+% .data
+%     x: .asciiz "x > "
+%     y: .asciiz "y > "
+%     expression: .asciiz "(4x / 3) * y = "
+    \end{lstlisting}
+
+    \section*{Conclusion}
+
+    With the help of this task, I found out how to do simple useful operations, such as prompting input from the user. I also understood how I would have to sequence the instructions to implement the given mathematical.
+
+    \section*{Reference}
+
+    I used the help window provided by MARS for MIPS documentation
+\end{document}

@@ -1,0 +1,207 @@
+\documentclass{../../classes/anal}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.6}
+
+\pgfplotsset{soldot/.style={color=blue,only marks,mark=*}}
+\pgfplotsset{holdot/.style={color=blue,fill=white,only marks,mark=*}}
+
+\title{Homework for week 1}
+
+\begin{document}
+    \maketitle
+
+    \section*{2.1}
+
+    \begin{problem}{5}
+        \begin{enumerate}[label={(\alph*)}]
+            \item \begin{enumerate}[label={(\roman*)}]
+                \item \begin{align*}
+                    \frac{(80 - 4.9 \cdot 4.1^2) - (80 - 4.9 \cdot 4^2)}{0.1}
+                    &= 4.9{4^2 - 4.1^2 \over 0.1} \\
+                    &= 4.9{(4+4.1)(4-4.1) \over 0.1} \\
+                    &= 49 \cdot 8.1 \cdot (-0.1) \\
+                    &= 8.1 \cdot -4.9 \\
+                    &= -39.69
+                \end{align*}
+                \item \begin{align*}
+                    \frac{(80 - 4.9 \cdot 4.05^2) - (80 - 4.9 \cdot 4^2)}{0.05}
+                    &= 4.9{4^2 - 4.05^2 \over 0.05} \\
+                    &= 4.9{(4+4.05)(4-4.05) \over 0.05} \\
+                    &= 98 \cdot 8.05 \cdot (-0.05) \\
+                    &= 8.05 \cdot -4.9 \\
+                    &= -39.445
+                \end{align*}
+                \item \begin{align*}
+                    v_{[4, 4.01]}=
+                    \frac{(80 - 4.9 \cdot 4.01^2) - (80 - 4.9 \cdot 4^2)}{0.01}
+                    &= 4.9{4^2 - 4.01^2 \over 0.01} \\
+                    &= 4.9{(4+4.01)(4-4.01) \over 0.01} \\
+                    &= 490 \cdot 8.01 \cdot (-0.01) \\
+                    &= 8.01 \cdot -4.9 \\
+                    &= -39.249
+                \end{align*}
+            \end{enumerate}
+            \item {
+                \begin{align*}
+                    v_4=
+                    \lim_{x \rightarrow 0}{(80 - 4.9\cdot(4 + x)^2) - (80 - 4.9\cdot4^2) \over x}
+                    &= \lim_{x \rightarrow 0}{4.9 \cdot 4^2 - 4.9 \cdot (4 +  x)^2 \over x} \\
+                    &= 4.9 \cdot \lim_{x \rightarrow 0} {4^2 - (4 + x)^2 \over x} \\
+                    &= 4.9 \cdot \lim_{x \rightarrow 0} {16 - 16 - 8x - x^2 \over x} \\
+                    &= 4.9 \cdot \lim_{x \rightarrow 0} - (8 + x) \\
+                    &= 4.9\cdot(-8) \\
+                    &= -39.2
+                \end{align*}
+            }
+        \end{enumerate}
+    \end{problem}
+
+    \section*{2.2}
+    \begin{problem}{5}
+        \begin{enumerate}[label={(\alph*)}]
+            \item \[\lim_{x\rightarrow1}f(x)=2\]
+            \item \[\lim_{x\rightarrow3^-}f(x)=1\]
+            \item \[\lim_{x\rightarrow3^+}f(x)=4\]
+            \item \[\lim_{x\rightarrow3}f(x) \text{ doesn't exist}\]
+            \item \[f(3) = 3\]
+        \end{enumerate}
+    \end{problem}
+
+    \begin{problem}{7}
+        \begin{enumerate}[label={(\alph*)}]
+            \item \[a=4\]
+            \item \[a=5\]
+            \item \[a=2,4\]
+            \item \[a=4\]
+        \end{enumerate}
+    \end{problem}
+
+    \begin{problem}{9}
+        \begin{enumerate}[label={(\alph*)}]
+            \item \[\lim_{x\rightarrow-7}f(x)=-\infty\]
+            \item \[\lim_{x\rightarrow-3}f(x)=\infty\]
+            \item \[\lim_{x\rightarrow0}f(x)=\infty\]
+            \item \[\lim_{x\rightarrow6^-}f(x)=-\infty\]
+            \item \[\lim_{x\rightarrow6^+}f(x)=\infty\]
+        \end{enumerate}
+    \end{problem}
+
+    \begin{problem}{12} 
+        \begin{tikzpicture}
+            \begin{axis}[xmin=-3,xmax=3,ymin=-2,ymax=3]
+                \addplot[domain=-3:-1,blue] {-abs(x)^(1/3)};
+                \addplot[domain=-1:2,orange] {x};
+                \addplot[domain=2:3,green] {(x-1)^2};
+                \addplot[holdot,green,fill=white] coordinates{(2,1)};
+                \addplot[soldot,blue] coordinates{(-1,-1)};
+                \addplot[soldot,orange] coordinates{(2,2)};
+            \end{axis}
+        \end{tikzpicture}
+    \end{problem}
+
+    \begin{problem}{15} 
+        \begin{tikzpicture}
+            \begin{axis}[xmin=-1,xmax=3,ymin=-1,ymax=4]
+                \addplot[domain=-1:1,blue,samples=100] {sin((x-1)*400)/10+3};
+                \addplot[domain=1:3,blue,samples=100] {sin((x-1)*400)/10};
+                \addplot[soldot,blue,fill=white] coordinates{(1,3)(1,0)};
+                \addplot[soldot,blue] coordinates{(1,2)};
+            \end{axis}
+        \end{tikzpicture}
+    \end{problem}
+
+    \begin{problem}{17} 
+        \begin{tikzpicture}
+            \begin{axis}[xmin=-3,xmax=3,ymin=-1,ymax=4]
+                \addplot[domain=-3:-1,blue,samples=100] {sin((x+1)*400)/10};
+                \addplot[domain=-1:3,blue,samples=100] {-(x-2)^2/3*2/3+3};
+                \addplot[holdot,blue,fill=white] coordinates{(-1,0)(-1,1)(2,3)};
+                \addplot[soldot,blue] coordinates{(-1,2)(2,1)};
+            \end{axis}
+        \end{tikzpicture}
+    \end{problem}
+
+    \begin{problem}{29}
+        \begin{equation*}
+            \lim_{x\rightarrow5^+}{x+1 \over x-5} = \infty
+        \end{equation*}
+
+        Because when \(x\) approaches \(5\) from the right we have that \(x-5>0\) (\(x-5\) approaches \(0\) from the right) and \(x+2>0\).
+    \end{problem}
+
+    \begin{problem}{31}
+        \begin{equation*}
+            \lim_{x\rightarrow2}{x^2 \over (x-2)^2} = \infty
+        \end{equation*}
+
+        Because when \(x\) approaches \(2\) we have that \((x+2)^2\) approaches 0. and \(x^2>0\), \((x-2)^2>0\).
+    \end{problem}
+
+    \begin{problem}{33}
+        \begin{equation*}
+            \lim_{x\rightarrow1^+}{\ln(\sqrt{x}-1)} = -\infty
+        \end{equation*}
+
+        Because \(\ln(\lim_{x\rightarrow1^+}\sqrt{x}-1) = -\infty\), \(\lim_{x\rightarrow1^+}\sqrt{x}-1=0\) since \(\lim_{x\rightarrow1^+}\sqrt{x}=1\) and \(1-1=0\) and \(\lim_{a\rightarrow1^0}\ln(a)=-\infty\).
+    \end{problem}
+
+    \begin{problem}{35}
+        \begin{equation*}
+            \lim_{x\rightarrow{\pi \over 2}^+} \frac{1}{x}\sec x = -\infty
+        \end{equation*}
+
+        Because when x approaches \({\pi \over 2}\) from the right, we have that \(\cos x\) approaches 0 and \(cos x < 0\) and \({1 \over x\cdot\cos x} < 0\).
+    \end{problem}
+
+    \begin{problem}{37}
+        \begin{equation*}
+            \lim_{x\rightarrow1}{x^2+2x \over x^2-2x+1} = \lim_{x\rightarrow1}{(x-1)() \over (x-1)^2} = \infty
+        \end{equation*}
+
+        Because \((x-1)^2\) approaches \(0\) and \(x(x+2)\) approaches \(3\).
+    \end{problem}
+
+    \begin{problem}{39}
+        \begin{equation*}
+            \lim_{x\rightarrow0}(\ln x^2 - x^{-2}) = -\infty
+        \end{equation*}
+    \end{problem}
+
+    \begin{problem}{41}
+        \(x=-2\)
+    \end{problem}
+
+    \section*{2.3}
+
+    \begin{problem}{5}
+        \begin{align*}
+            \lim_{v\rightarrow2}(v^2+2v)(2v^3-5)
+            &= (\lim_{v\rightarrow2}(v^2+2v))\cdot(\lim_{v\rightarrow2}(2v^2-5)) & \text{Product law} \\
+            &= (\lim_{v\rightarrow2}v^2+\lim_{v\rightarrow2}2v)\cdot(\lim_{v\rightarrow2}2v^3-5) & \text{Sum \& Difference law} \\
+            &= (\lim_{v\rightarrow2}v^2 + 2\cdot\lim_{v\rightarrow2}v)\cdot(2\cdot\lim_{v\rightarrow2}v^3-5) & \text{Constant multiple law} \\
+            &= (4+2\cdot2)(2\cdot8-5) & \\
+            &= 8\cdot11 & \\
+            &= 88&
+        \end{align*}
+    \end{problem}
+
+    \begin{problem}{7}
+        \begin{align*}
+            \lim_{u\rightarrow-2}\sqrt{9-u^3+2u^2}
+            &= \sqrt{\lim_{u\rightarrow-2}(9-u^3+2u^2)} & \text{Root law} \\
+            &= \sqrt{\lim_{u\rightarrow-2}9-\lim_{u\rightarrow-2}u^3+\lim_{u\rightarrow-2}2u^2} & \text{Sum \& Difference laws} \\
+            &= \sqrt{9 - \lim_{u\rightarrow-2}u^3 + 2\cdot\lim_{u\rightarrow-2}u^2} & \text{Constant Multiple law} \\
+            &= \sqrt{9+8+2\cdot4} \\
+            &= 5
+        \end{align*}
+    \end{problem}
+
+    \begin{problem}{9}
+        \begin{align*}
+            \lim_{t\rightarrow-1}({2t^5-t^4 \over 5t^2+4})^3
+            &= \left({\lim_{t\rightarrow-1}(2t^5-t^4) \over \lim_{t\rightarrow-1}(5t^2+4)}\right)^3 & \text{Quotient law} \\
+            &= \left({\lim_{t\rightarrow-1}2t^5 - \lim_{t\rightarrow-1}t^4 \over \lim_{t\rightarrow-1}5t^2 + \lim_{t\rightarrow-1}4}\right)^3 & \text{Sum \& Differnece laws} \\
+            &= \left({2\cdot\lim_{t\rightarrow-1}t^5-\lim_{t\rightarrow-1}t^4 \over 5\cdot\lim_{t\rightarrow-1}t^2+4}\right)
+        \end{align*}
+    \end{problem}
+\end{document}

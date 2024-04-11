@@ -1,0 +1,87 @@
+\documentclass{article}
+
+\usepackage{../../classes/dim}
+\usepackage{listings}
+\usepackage{graphicx}               % Necessary to use \scalebox
+\usepackage[dvipsnames]{xcolor}               % Necessary to use \scalebox
+
+\begin{document}
+    \header{Homework}
+    {Algorithms and Data Structures}
+
+    \begin{center}
+        \large
+        Worksheet 4
+    \end{center}
+    \begin{tasks}
+        \item {
+            \begin{proof} By induction on \(i\).
+                Base case: \(i = 1\)
+                \begin{displaymath}
+                    p_b(b(j), c) = 1 = 1!
+                \end{displaymath}
+                Induction step:
+                \begin{displaymath}
+                    p_b(b(j), c) 
+                    = \frac{1}{i} \cdot p_{b-b(j)}(c)
+                    = \frac{1}{i} \cdot \frac{1}{(i-1)!} 
+                    = \frac{1}{i!}
+                \end{displaymath}
+            \end{proof}
+        }
+        \item {
+            They probably used the fact that \((a+b)^2 = a^2 + b^2 + 2ab\). They could calculate the sum of \(a\) and \(b\) and the squares \(a^2, b^2, (a+b)^2\) fairly easily, which in (also fairly easy) combination \((a+b)^2 - a^2 - b^2\) would give them the double of the product they were looking for \(2ab\) --- which they would also be able to halve easily to obtain \(ab\).
+        }
+        \item {
+            \begin{verbatim}
+let p = random(0, size(A));
+let L = [];
+let R = [];
+for i in 0..size(A) {
+    if i != p {
+        if A[i] < A[p] { L.push(A[i]) }
+        else { R.push(A[i]) }
+    }
+}
+            \end{verbatim}
+        }
+        \item {
+            First of all, this definition is not full. The case where either \(n = 0\) or \(m = 0\) is not handeled. I can not make an assumption fot what sould be done, since it is very important at least for the 2-nd task, so I will just assume that \(n = m\)
+            \begin{enumerate}[label={(\arabic*)}]
+                \item {
+                    We can write the number of comparisons as \(t'(n, m) = 1 + t'(n-1, m-1)\) which can be shortened to \(t'(n, m) = n = m\). Whereas, for the original merge \(t(n, m) = n + m - 1\). This modified merge has less comparisons.
+                }
+                \item {
+                    This can be disproven with a counterexample: Let \(A = [1, 2, 3], B = [4, 5, 6]\), then \(\text{merge}'(A, B) = [1, 4, 2, 5, 3, 6]\) which is not sorted.
+                }
+            \end{enumerate}
+        }
+        \item {
+            \begin{enumerate}[label={(\arabic*)}]
+                \item {
+                    We can say that \(S_n = [1:365]^n\). Thereby \(p_n(x) = 365^{-n}\)
+                }
+                \item {
+                    \begin{displaymath}
+                        \#E_n = 365 \cdot 364 \cdot \ldots \cdot (365-n +1) = \frac{365!}{(365-n)!}
+                    \end{displaymath}
+                    This also introduces a constraint \(n \leq 365\) which is quite logical -- you can't have more people with distinct birthdays than the number of possible birthdays.
+                }
+                \item {
+                    \begin{displaymath}
+                        p(E_n) = \frac{\#E_n}{365^n} = \frac{365!}{365^n(365-n)!}
+                    \end{displaymath}
+                }
+                \item {
+                    \begin{displaymath}
+                        p(E_{23}) 
+                        = \frac{365!}{(365-23)!}\frac{1}{365^{23}}
+                        = \frac{342\cdot343\cdot\ldots\cdot364}{365^{22}}
+                        \approx \frac{3699}{7509} \approx 0.4927...
+                    \end{displaymath}
+                }
+                \item {{\color{Sepia}{\(p(E_n)\)is}} the probability of there being no pair in \(n\) people that share a birthday. What was probably ment to be written in the worksheet was the statement \(1-p(E_{23})>1/2\), which means that given 23 people, the chance of there being a pair sharing a birthday is more than 50\%.}
+            \end{enumerate}
+        }
+    \end{tasks}
+\end{document}

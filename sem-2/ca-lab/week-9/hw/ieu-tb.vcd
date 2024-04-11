@@ -1,0 +1,43 @@
+$date
+	Fri May 26 19:45:03 2023
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module ieu_tb $end
+$var wire 32 ! res [31:0] $end
+$var reg 1 " U $end
+$var reg 16 # imm [15:0] $end
+$scope module UUT $end
+$var wire 1 " U $end
+$var wire 16 $ imm [15:0] $end
+$var wire 32 % res [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b11 %
+b11 $
+b11 #
+0"
+b11 !
+$end
+#10
+b11111111111111111010101010101010 !
+b11111111111111111010101010101010 %
+b1010101010101010 #
+b1010101010101010 $
+#20
+b1010101010101010 !
+b1010101010101010 %
+1"
+#30
+b11 !
+b11 %
+b11 #
+b11 $
+#40

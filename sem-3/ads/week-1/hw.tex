@@ -1,0 +1,299 @@
+\documentclass{article}
+
+\usepackage[margin=2cm]{geometry}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{mathtools}
+
+\title{A\&DS Worksheet 1 solutions}
+\author{Dimitri Tabatadze}
+
+
+\begin{document}
+    \maketitle
+
+    \begin{enumerate}
+        \item \begin{enumerate}[label={(\arabic*)}]
+            \item {
+                Given the definition 
+                \begin{displaymath}
+                    f(n) = O(g(n)) \leftrightarrow \exists n_0 \in \mathbb{N}, c > 0, f(n) \leq c \cdot g(n) \ \forall n \geq n_0
+                \end{displaymath}
+                we can clearly see that \(c \geq 2\) and \(n_0 = 1\) satisfies the inequality
+                \begin{displaymath}
+                    \forall n \geq n_0, \sqrt{n} + n \leq c \cdot n.
+                \end{displaymath}
+            }
+            \item {
+                Given the definition
+                \begin{displaymath}
+                    f(n) = o(g(n)) \leftrightarrow \forall c > 0 \ \exists n_0 \in \mathbb{N} ,\ f(n) \leq c \cdot g(n) \ \forall n \geq n_0
+                \end{displaymath}
+                we can write \(n_0\) in terms of \(c\)
+                \begin{displaymath}
+                    \begin{aligned}
+                        n^i &\leq c \cdot n^j & \Longleftrightarrow & \\
+                        1 &\leq c \cdot n^{j - i} & \Longleftrightarrow & \\
+                        c^{-1} &\leq n^{j - i} & \Longleftrightarrow & \\
+                        \sqrt[j - i]{c^{-1}} = c^{\frac{1}{i - j}} &\leq n & \implies & 
+                        \Aboxed{n_0 &= \lceil c^{\frac{1}{i - j}} \rceil}
+                    \end{aligned}
+                \end{displaymath}
+
+                Now we need to prove that \(n^i \leq c \cdot n^j \) for all \(n \geq \lceil c^{\frac{1}{i - j}} \rceil\) given that \(i < j\). We can do this by induction on \(n\).
+
+                \paragraph*{Base case: \(\mathbf{n = \lceil c^{\frac{1}{i - j}} \rceil}\)}
+                \begin{displaymath}
+                    \begin{aligned}
+                        \left\lceil c^{\frac{1}{i - j}} \right\rceil^i &\leq c \cdot \left\lceil c^{\frac{1}{i - j}} \right\rceil^j & \implies \\
+                        \left\lceil c^{\frac{1}{i - j}} \right\rceil^{i - j} &\leq c & \implies \\
+                        \left\lceil \left(\frac{1}{c}\right)^{\frac{1}{j - i}} \right\rceil^{j - i} &\geq \frac{1}{c} & \implies &&
+                        \left\lceil \sqrt[j-i]{\frac{1}{c}} \right\rceil &\geq \sqrt[j-i]{\frac{1}{c}}
+                    \end{aligned}
+                \end{displaymath}
+                holds true only if \(i - j\) is \(< 0\), which it is since \(i < j\).
+
+                \paragraph*{Induction step:}
+                \begin{displaymath}
+                    \begin{aligned}
+                        n^i &\leq c \cdot n^j & \implies \\
+                        n^{i - j} &\leq c & \implies &&
+                        \frac{1}{n^{j - i}} &\leq c
+                    \end{aligned}
+                \end{displaymath}
+                Since \(j - i > 0\), it's obvious that \(n^{j - i} < (n + 1)^{j - i}\).
+                \begin{displaymath}
+                    \begin{aligned}
+                        \frac{1}{(n + 1)^{j - i}} \leq \frac{1}{n^{j - i}} &\leq c & \implies \\
+                        \frac{1}{(n + 1)^{j - i}} &\leq c & \implies \\
+                        (n + 1)^{i - j} &\leq c & \implies &&
+                        (n + 1)^i &\leq c \cdot (n + 1)^j
+                    \end{aligned}
+                \end{displaymath}
+            }
+            \item {
+                The fact that if \(h(n) = o(g(n))\) then \(h(n) = O(g(n))\) also holds true, by definition, we can simply say that
+                \begin{displaymath}
+                    \begin{aligned}
+                        f(n) + h(n) &= O(\max\{O(g(n)), o(g(n))\}) \quad & \text{(where \(f(n) = O(g(n))\))}\\
+                        &= O(g(n))
+                    \end{aligned}
+                \end{displaymath}
+            }
+            \item {
+                In the equation \((\log x)^k = o(x)\) we can substitute \(x\) with \(e^x\) to get
+                \begin{displaymath}
+                    \begin{aligned}
+                        \left(x\log e\right)^k &= o(e^x) & \implies \\
+                        x^k\cdot\underbrace{\left(\log e\right)^k}_{\text{constant}} &= o(e^x)
+                    \end{aligned}
+                \end{displaymath}
+                and by definition \(f(n) = o(g(n))\), we can write
+                \begin{displaymath}
+                    \forall c > 0 \ \exists n_0 \in \mathbb{N}, (\log x)^k \leq c\cdot x, \ \forall n \geq n_0
+                \end{displaymath}
+                notice that we can replace \(c\) with \(a\cdot t\) in the main condition where \(t > 0\) is some constant (\(t = (\log e)^k\) in this case).
+                \begin{displaymath}
+                    \forall c > 0 \ \exists n_0 \in \mathbb{N}, (\log x)^k \leq a\cdot t\cdot x, \ \forall n \geq n_0
+                \end{displaymath}
+                and the statement still holds true.
+            }
+            \item {
+                By the lemma of addition
+                \begin{displaymath}
+                    \begin{aligned}
+                        O(n^2) + O(n\cdot(\log n)^k) &= O(n^2) & \implies \\
+                        n\cdot(\log n)^k &= O(n^2) & \implies \\
+                        (\log n)^k &= O(n) 
+                    \end{aligned}
+                \end{displaymath}
+                which we proved in the previous ecxercise.\footnote{This is not a good proof.}
+            }
+        \end{enumerate}
+        \item {
+            The growth rate (I.E. the derivative) of \(e^x\) is \(e^x\) itself, meaning that the growth is exponential. However, the derivative of any polynomial \(x^k\) is one degree lower \(k\cdot x^{k-1}\) than the polynomial itself. Exponential growth is strictly faster than polynomial growth.
+
+            This can be shown by L'Hôpital's rule. 
+        }
+        \item {
+            For \(n = 2^k, k \in \mathbb{N}\)
+            \begin{enumerate}[label={(\arabic*)}]
+                \item {First, the conjecture for a closed form solution. Let \(k = 3\)
+                    \begin{displaymath}
+                        \begin{aligned}
+                            f(2^k) &= f(2^{k-1}) + b\cdot \log(2^k) & \implies \\
+                            f(2^k) &= f(2^{k-2}) + b\cdot \log(2^{k-1}) + b\cdot \log(2^k) & \implies \\
+                            f(2^k) &= f(2^{k-3}) + b\cdot \log(2^{k-2}) + b\cdot \log(2^{k-1}) + b\cdot \log(2^k) & \implies \\
+                            f(2^k) &= f(1) + b\cdot ((\log(2^k) - (k - 1)) + \dots + (\log(2^k) - 2) + (\log(2^k) - 1) + \log(2^k)) & \implies \\
+                            f(2^k) &= a + b \cdot ((k - (k - 1)) + \dots + (k - 2) + (k - 1) + k) & \implies \\
+                            f(2^k) &= a + b \cdot (1 + 2 + \dots + (k - 1) + k) & \implies \\
+                            f(2^k) &= a + b \cdot \frac{k(k + 1)}{2} & \implies \\
+                            f(n) &= a + b \cdot \frac{\log n(\log n + 1)}{2}
+                        \end{aligned}
+                    \end{displaymath}
+                    The proof (by induction on \(k\))
+
+                    \paragraph*{Base case: \(k = 1\)}
+                    \begin{displaymath}
+                        \begin{aligned}
+                            f(2^1) 
+                            &= a + b \cdot \frac{1(1 + 1)}{2} \\
+                            &= a + b \\
+                            &= f(2^1/2) + b \cdot \log(2^1)
+                        \end{aligned}
+                    \end{displaymath}
+
+                    \paragraph*{Induction step:}
+                    \begin{displaymath}
+                        \begin{aligned}
+                            f(2^k) 
+                            &= a + b \cdot \frac{k(k + 1)}{2} \\
+                            a + b \cdot \frac{k(k + 1)}{2} + b\cdot\log(2^{k+1})
+                            &= a + b \cdot \frac{k(k + 1)}{2} + b\cdot (k+1) \\
+                            &= a + b \cdot \frac{k(k + 1) + 2(k+1)}{2} \\
+                            &= a + b \cdot \frac{(k+1)(k+2)}{2} \\
+                            &= a + b \cdot \frac{(k+1)((k+1)+1)}{2} \\
+                            &= f(2^{k+1}) \\
+                        \end{aligned}
+                    \end{displaymath}
+                    Now all that's left to show is that
+                    \begin{displaymath}
+                        f(n) = a + b \cdot \frac{\log n(\log n + 1)}{2} = O((\log n)^2).
+                    \end{displaymath}
+                    and we can do that by the lemma given in the slides
+                    \begin{displaymath}
+                        \begin{aligned}
+                            a + b \cdot \frac{\log n(\log n + 1)}{2}
+                            &= O(1) + O(1) \cdot \frac{O(\log n)\cdot(O(\log n) + O(1))}{O(1)} \\
+                            &= O(1) + O(\log n)\cdot O(\log n) \\
+                            &= O(\log n\cdot\log n) \\
+                            &= O((\log n)^2)
+                        \end{aligned}
+                    \end{displaymath}
+                }
+                \item {
+                    First, the conjecture for a closed form solution. Let \(k=3\)
+                    \begin{align*}
+                        f(2^k) 
+                        &= 2\cdot f(2^{k-1}) + b\cdot 2^k\cdot \log(2^k) \\
+                        &= 2\cdot \left(2\cdot f(2^{k-2}) + b\cdot 2^{k-1}\cdot \log(2^{k-1})\right) + b\cdot 2^k\cdot \log(2^k) \\
+                        &= 2\cdot \left(2\cdot \left(2\cdot f(2^{k-3}) + b\cdot 2^{k-2}\cdot \log(2^{k-2})\right) + b\cdot 2^{k-1}\cdot \log(2^{k-1})\right) + b\cdot 2^k\cdot \log(2^k) \\
+                        &= 2^3\cdot a + 2^2\cdot b\cdot2^{k-2}\cdot\log(2^{k-2}) + 2^1\cdot b\cdot2^{k-1}\cdot\log(2^{k-1}) + 2^0\cdot b\cdot2^k\cdot\log(2^k) \\
+                        &= 2^k\cdot a + 2^k\cdot b\left(\log(2^{k-2}) + \log(2^{k-1}) + \log(2^k)\right) \\
+                        &= 2^k\cdot a + 2^k\cdot b\left(\log(2^k) - 2 + \log(2^k) - 1 + \log(2^k)\right) \\
+                        &= 2^k\cdot a + 2^k\cdot b\left(k\cdot\log(2^k) - 2 - 1\right) \\
+                        &= 2^k\cdot a + 2^k\cdot b\left(k^2 - \sum_{i=1}^{k-1}i\right) \\
+                        &= 2^k\cdot \left(a + b\left(k^2 - \frac{k(k-1)}{2}\right)\right) \\
+                        &= 2^k\cdot \left(a + b\left(\frac{2k^2-k^2+k)}{2}\right)\right) \\
+                        &= 2^k\cdot \left(a + b\left(\frac{k(k+1)}{2}\right)\right) \\
+                        f(n) &= n\cdot\left(a+\frac{b}{2}\cdot\left(\log n\cdot(\log n+1)\right)\right)
+                    \end{align*}
+
+                    The proof by induction on k:
+
+                    \paragraph*{Base case: \(\mathbf{k = 1}\)}
+                    \begin{displaymath}
+                        \begin{aligned}
+                            f(2^1) 
+                            &= 2^1\cdot\left( a + \frac{b}{2}\cdot1(1+1) \right) \\ 
+                            &= 2^1\cdot\left(a + b\right) \\
+                            &= 2\cdot f(2^0) + b\cdot2^1\cdot1
+                        \end{aligned}
+                    \end{displaymath}
+                    \paragraph*{Induction step:}
+                    \begin{displaymath}
+                        \begin{aligned}
+                            2\cdot\underbrace{\left(2^k\cdot \left(a + b\left(\frac{k(k+1)}{2}\right)\right)\right)}_{\text{value for }k} + b\cdot2^{k+1}\cdot\log(2^{k+1})
+                            &= 2^{k+1}\cdot \left(a + b\left(\frac{k(k+1)}{2}\right)\right) + b\cdot2^{k+1}\cdot(k+1) \\
+                            &= 2^{k+1}\cdot \left(a + b\left(\frac{k(k+1)}{2}\right) + b(k+1) \right) \\
+                            &= 2^{k+1}\cdot \left(a + b\left(\frac{k(k+1)}{2} + (k+1)\right) \right) \\
+                            &= 2^{k+1}\cdot \left(a + b\left(\frac{k(k+1) + 2(k+1)}{2}\right) \right) \\
+                            &= 2^{k+1}\cdot \left(a + b\left(\frac{(k + 1)(k + 2)}{2}\right) \right) \\
+                            &= f(2^{k+1})
+                        \end{aligned}
+                    \end{displaymath}
+                    now we with the lemma we show that
+                    \begin{displaymath}
+                        \begin{aligned}
+                            n\cdot\left(a+\frac{b}{2}\cdot\left(\log n\cdot(\log n+1)\right)\right)
+                            &= O(n) \cdot \left( O(1) + O(1) \cdot \left(O(\log n)\cdot (O(\log n) + O(1))\right) \right) \\
+                            &= O(n) \cdot \left( O(1) + O(1) \cdot \left(O(\log n)\cdot (O(\log n))\right) \right) \\
+                            &= O(n) \cdot \left( O(1) + O(1) \cdot O((\log n)^2) \right) \\
+                            &= O(n) \cdot \left( O(1) + O((\log n)^2) \right) \\
+                            &= O(n) \cdot O((\log n)^2) \\
+                            &= O(n \cdot (\log n)^2) \\
+                        \end{aligned}
+                    \end{displaymath}
+                }
+                \item {
+                    The conjecture. Let \(k=3\)
+                    \begin{displaymath}
+                        \begin{aligned}
+                            f(2^k) 
+                            &= 7\cdot f(2^{k-1}) + b\cdot2^{2k} \\
+                            &= 7\cdot \left( 7\cdot f(2^{k-2}) + b\cdot2^{2k-2} \right) + b\cdot2^{2k} \\
+                            &= 7\cdot \left( 7\cdot \left( 7\cdot f(2^{k-3}) + b\cdot2^{2(k-2)} \right) + b\cdot2^{2(k-1)} \right) + b\cdot2^{2k} \\
+                            &= 7^k \cdot f(2^{k-3}) + 7^{k-1}\cdot b\cdot2^{2(k-2)}+ 7^{k-2}\cdot b\cdot2^{2(k-1)} + 7^{k-3}\cdot b\cdot2^{2k} \\
+                            &= 7^k \cdot a + b\cdot7^k4^k\left(7^{-1}\cdot 2^{2(-2)}+ 7^{-2}\cdot2^{2(-1)} + 7^{-3}\cdot2^{2(0)}\right) \\
+                            &= 7^k \cdot a + b\cdot7^k\left( \sum_{i=1}^{k} 7^{-i}\cdot 2^{2i} \right) \\
+                            &= 7^k \cdot a + b\cdot7^k\left( \sum_{i=1}^{k} \left(\frac47\right)^{i} \right) \\
+                            &= 7^k \cdot a + b\cdot7^k\cdot\left( \frac47 \cdot \frac{\left(\frac47\right)^{k} - 1}{\frac47 - 1} \right) \\
+                            &= 7^k \cdot a + b\cdot7^k\cdot\left( \frac{4}{-3} \cdot \left(\left(\frac47\right)^{k} - 1\right) \right) \\
+                            &= 7^k \cdot \left( a + \frac{4}{3}b \cdot \left(1 - \left(\frac47\right)^{k}\right) \right) \\
+                            f(n) &= n^{\log(7)}\cdot a + 7^{\log(n)}\cdot\frac{4}{3}b\cdot\left( 1 - \left(\frac47\right)^{\log(n)} \right)
+                        \end{aligned}
+                    \end{displaymath}
+                    
+                    We can prove this by induction on \(k\).
+
+                    \paragraph*{Base case: \(\mathbf{k = 1}\)}
+                    \begin{displaymath}
+                        \begin{aligned}
+                            f(2^1) 
+                            &= 7^1 \cdot \left( a + \frac{4}{3}b \cdot \left(1 - \left(\frac47\right)^{1}\right) \right) \\
+                            &= 7a + \frac{7\cdot4}{3}b \cdot \left(1 - \frac47\right) \\
+                            &= 7a + \frac{7\cdot4}{3}b \cdot \frac{3}{7} \\
+                            &= 7a + 4b \\
+                            &= 7\cdot f(2^1/2) + b\cdot(2^1)^2\\
+                        \end{aligned}
+                    \end{displaymath}
+                    \paragraph*{Induction step:}
+                    \begin{displaymath}
+                        \begin{aligned}
+                            f(2^{k+1})
+                            &= 7\cdot\left(f(2^k)\right) + b\cdot\left(2^{k+1}\right)^2 \\
+                            &= 7\cdot\left(7^k \cdot \left( a + \frac{4}{3}b \cdot \left(1 - \left(\frac47\right)^{k}\right) \right)\right) + b\cdot\left(2^{k+1}\right)^2 \\
+                            &= 7^{k + 1} \cdot a + 7^{k + 1} \cdot \frac{4}{3}b \cdot \left(1 - \left(\frac47\right)^{k}\right) + b\cdot\left(2^{k+1}\right)^2 \\
+                            &= 7^{k + 1} \cdot a + b \cdot \left(7^{k + 1} \cdot \frac{4}{3}\left(1 - \left(\frac47\right)^{k}\right) + 4^{k+1}\right) \\
+                            &= 7^{k + 1} \cdot a + b \cdot 4 \cdot \left(\frac{7^{k + 1}}{3}\left(1 - \left(\frac47\right)^{k}\right) + 4^k\right) \\
+                            &= 7^{k + 1} \cdot a + b \cdot 4 \cdot \left(\frac{7^{k + 1}}{3}\left(1 - \left(\frac47\right)^{k} + \frac{3\cdot4^k}{7^{k+1}}\right)\right) \\
+                            &= 7^{k + 1} \cdot a + b \cdot 4 \cdot \left(\frac{7^{k + 1}}{3}\left(1 - \left(\frac47\right)^{k} + \frac{3}{7}\cdot\frac{4^k}{7^k}\right)\right) \\
+                            &= 7^{k + 1} \cdot a + b \cdot 4 \cdot \left(\frac{7^{k + 1}}{3}\left(1 - \left(\frac47\right)^{k} + \frac{3}{7}\cdot\left(\frac47\right)^k\right)\right) \\
+                            &= 7^{k + 1} \cdot a + b \cdot 4 \cdot \left(\frac{7^{k + 1}}{3}\left(1 + \left(\frac47\right)^{k}\cdot\left(\frac{3}{7} - 1\right)\right)\right) \\
+                            &= 7^{k + 1} \cdot a + b \cdot 4 \cdot \left(\frac{7^{k + 1}}{3}\left(1 + \left(\frac47\right)^{k}\cdot\frac{-4}{7}\right)\right) \\
+                            &= 7^{k + 1} \cdot a + b \cdot 4 \cdot \left(\frac{7^{k + 1}}{3}\left(1 - \left(\frac47\right)^{k + 1}\right)\right) \\
+                            &= 7^{k + 1} \cdot a + 7^{k + 1} \cdot b \cdot \frac{4}{3}\left(1 - \left(\frac47\right)^{k + 1}\right) \\
+                            &= 7^{k + 1} \cdot \left( a + \frac{4}{3}b \cdot \left(1 - \left(\frac47\right)^{k + 1}\right)\right)
+                        \end{aligned}
+                    \end{displaymath}
+                    now we with the lemma we show that
+                    \begin{displaymath}
+                        \begin{aligned}
+                            n^{\log7}\cdot a + n^{\log7}\cdot\frac{4}{3}b\cdot\left( 1 - n^{\log\frac47} \right)
+                            &= O(n^{\log7}) \cdot O(1) + O(n^{\log7}) \cdot O(1) \cdot O(1) \cdot \left(O(1) - O(n^{\log\frac47})\right) \\
+                            &= O(n^{\log7}) + O(n^{\log7}) \cdot O(n^{\log\frac47}) \quad \text{ (since \(\log\frac47\) is a negative power)}\\
+                            &= O(n^{\log7}) + O(n^{\log7}) \\
+                            &= O(n^{\log7}) \\
+                        \end{aligned}
+                    \end{displaymath}
+                }
+            \end{enumerate}
+            % \item { 
+            %     % Given \(x = a\circ b\) and \(y = c\circ d\) (where \(\circ\) is concatenation).
+            % }
+        }
+    \end{enumerate}
+\end{document}

@@ -1,0 +1,46 @@
+For \(h\) to be a ring homomorphism, it needs to satisfy the two conditions:
+\begin{gather*}
+    h(a + b) = h(a) +' h(b) \\
+    h(a * b) = h(a) *' h(b)
+\end{gather*}
+
+\paragraph{Addition.}
+\begin{displaymath}
+    \begin{gathered} 
+        a, b \in S_n,
+        (a +_n b)(i, j) = a(i, j) + b(i, j) \\
+        \begin{aligned}
+            h(a +_n b)(p, q)(i, j)
+            =\phantom{}& (\CR a +_n \CG b)\CB{(i + (p - 1)(n / 2), j + (q - 1)(n / 2))} \\
+            =\phantom{}& \CR a\CB{(i + (p - 1)(n / 2), j + (q - 1)(n / 2))}\ + \\
+             & \CG b\CB{(i + (p - 1)(n / 2), j + (q - 1)(n / 2))} \\
+            =\phantom{}& h(\CR a)(p, q)(i, j) + h(\CG b)(p, q)(i, j)
+        \end{aligned}
+    \end{gathered}
+\end{displaymath}
+where \(\quad p, q \in \{1, 2\}, \quad i, j \in [1:n/2]\).
+
+\paragraph{Multiplication.}
+\begin{displaymath}
+    \begin{gathered}
+        a, b \in S_n,
+        (a +_n b)(i, j) = a(i, j) + b(i, j) \\
+        \begin{aligned}
+            h(a *_n b)(p, q)(i, j)
+            &= (a *_n b)(\CR{i + (p - 1)(n / 2)}, \CG{j + (q - 1)(n / 2)}) \\
+            &= \sum_{\CM t = 1}^{n} a(\CR{i + (p - 1)(n / 2)}, \CM t) * b(\CM t, \CG{j + (q - 1)(n / 2)}) \\
+            &= \sum_{\CB k = 1}^{2} \sum_{\CM t = 1}^{n / 2} a(\CR{i + (p - 1)(n / 2)}, \CM t + (\CB k - 1) \cdot (n / 2)) * b(\CM t + (\CB k - 1) \cdot (n / 2), \CG{j + (q - 1)(n / 2)}) \\
+            &= \sum_{\CB k = 1}^{2} \sum_{\CM t = 1}^{n / 2} h(a)(p-1, (\CB k - 1))(i, \CM t) * h(b)((\CB k - 1), q-1)(\CM t, j) \\
+            &= \left(\sum_{\CB k = 1}^{2} h(a)(p-1, (\CB k - 1)) *_{n/2} h(b)((\CB k - 1), q-1)\right)(i, j) \\
+            &= \left(h(a) *_{n/2, 2} h(b)\right)(p, q)(i, j) \\
+        \end{aligned}
+    \end{gathered}
+\end{displaymath}
+
+\paragraph{Multiplicative identity.}
+\begin{displaymath}
+    \begin{gathered}
+        h(I_n) = \mat{I_{n/2} & 0_{n/2} \\ 0_{n/2} & I_{n/2}} \\
+        h(I_n)(p, q)(i, j) = I_n(i + (p - 1)(n / 2), j + (q - 1)(n / 2)) \implies h(I_n) = I_{n/2,2}
+    \end{gathered}
+\end{displaymath}

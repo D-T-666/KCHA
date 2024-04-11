@@ -32,13 +32,13 @@ h1, h2, h3, h4, h5, h6 {
     color: #2862BF;
 }
 
-.new {
-    color: #339966;
-}
-
 ul {
     padding: 0 1rem;
 }
+
+/* ul > li {
+    display: flex;
+} */
 
 .file>button {
     background-color: transparent;

@@ -1,0 +1,149 @@
+\documentclass{article}
+
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{svg}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+
+\title{CA Lab: Homework 6}
+\author{student: Dimitri Tabatadze}
+
+\newcommand{\points}[1]{{\footnotesize{\color{red}\textit{#1 points}}}}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.98,0.96,0.94}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\begin{document}
+    \maketitle
+
+    \section*{Task Description} 
+    
+    Write the code for ROM which has 3-bit inputs and 8-bit outputs.
+
+    \begin{enumerate}
+        \item Use Case block for the address with the following conditions: for each input, the output will be from 1 to 64. \points{50}
+        \item Write the testbench and make the analyze of timing diagram. \points{40}
+    \end{enumerate}
+
+    Please, solve the problems (write the comments) \points{5}, take the clear screenshots and combine all your solutions in one pdf file, then upload in teams. \points{5}
+
+    \section*{Solution}
+
+    \begin{enumerate}
+        \item {
+            The Verilog code:
+            
+            \begin{lstlisting}[language=verilog]
+module rom (
+    input [2:0] address, 
+    input sel,
+    output reg [7:0] data
+);
+
+always @ (sel or address) begin
+    if (~sel)
+        data = 8'd00;
+    else begin
+        case (address)
+            0: data = 8'd01;
+            1: data = 8'd02;
+            2: data = 8'd03;
+            3: data = 8'd04;
+            4: data = 8'd60;
+            5: data = 8'd42;
+            6: data = 8'd37;
+            7: data = 8'd22;
+        endcase
+    end
+end
+
+endmodule\end{lstlisting}
+        }
+        \item{
+            The code for the testbench:
+            \begin{lstlisting}[language=verilog]
+`include "rom.v"
+
+module rom_tb();
+
+reg [2:0] addr;
+reg sel;
+wire [7:0] data;
+
+rom UUT(.address(addr), .sel(sel), .data(data));
+
+initial begin
+    $dumpfile("rom_tb.vcd");
+    $dumpvars(0, rom_tb);
+    addr = 0;
+    sel = 0;
+    #5; sel = 1;
+    #5; addr = 1;
+    #5; addr = 2;
+    #5; addr = 3;
+    #5; addr = 4;
+    #5; sel = 0;
+    #5; sel = 1;
+    #5; addr = 5;
+    #5; addr = 6;
+    #5; addr = 7;
+    #5;
+    $finish;
+end
+
+endmodule\end{lstlisting}
+
+            and the resulting timing diagram:
+
+            \begin{figure}[h]
+                \includegraphics[width=12cm]{output.png}
+            \end{figure}
+        }
+    \end{enumerate}
+
+    \section*{Conclusion}
+    
+    The task was \textit{almost} very clear. I think I did what I was supposed to do with the memory stored in the rom. I just put random integers in there.
+
+    \section*{Reference}
+    
+    \begin{itemize}
+        \item Me
+        \item Myself
+        \item I
+        \item The slides (specifically \verb|CE_6.pdf|)
+    \end{itemize}
+
+\end{document}

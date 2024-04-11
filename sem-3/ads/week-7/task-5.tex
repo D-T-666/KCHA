@@ -1,0 +1,57 @@
+First, for a decimal counter with \(k\) digits we set
+\begin{itemize}
+    \item \(c_i\): number of digits changed
+    \item \(t_i\): number of trailing 9s after \(op_i\)
+\end{itemize}
+and
+\begin{itemize}
+    \item \(\Phi_i\): \(\text{sum of the digits}\over 9\)
+    \item \(\Phi_i > 0\): all trailing 9s become 0, but the digit just left of them gets incremented
+    \begin{displaymath}
+        \Phi_i = \Phi_{i-1} - t_{i-1} + \frac{1}{9}
+    \end{displaymath}
+    \item \(\Phi_i = 0\): every digit could have just turned from 9 to 0.
+    \begin{displaymath}
+        t_{i-1} = \Phi_{i-1} = k, \quad \Phi_i = \Phi_{i-1} - t_{i-1} < \Phi_{i-1} - t_{i-1} + \frac{1}{9}
+    \end{displaymath}
+\end{itemize}
+
+From this, we can infer that
+\begin{displaymath}
+    \begin{aligned}
+        \CG{\Phi_i - \Phi_{i-1}}
+        &\leq \frac{1}{9} - t_{i-1}
+    \end{aligned}
+\end{displaymath}
+
+It's clear that the cost of the \(i\)-th operation is
+\begin{displaymath}
+    c_i = \begin{cases}
+        t_{i - 1} + 1 & \text{if } t_{i - 1} < k \\
+        t_{i - 1} & \text{if } t_{i - 1} = k
+    \end{cases}
+\end{displaymath}
+giving us the upper bound
+\begin{displaymath}
+    \CR{c_i} \leq t_{i - 1} + 1.
+\end{displaymath}
+
+Now we just do some arithmetic
+\begin{displaymath}
+    \begin{aligned}
+        \hat{c}_i
+        &= \CR{c_{i}} + \CG{\Phi_i - \Phi_{i-1}} \\
+        &\leq t_{i - 1} + 1 + \frac{1}{9} - t_{i-1} \\
+        &= \CM{\frac{10}{9}}
+    \end{aligned}
+\end{displaymath}
+
+% \pgfornament[anchor=south,width=1cm]{78}
+
+\begin{displaymath}
+    \boxed{
+        \sum_{i = 1}^n c_i 
+        \leq \sum_{i = 1}^n \CM{\frac{10}{9}} + \CB{\underbrace{\Phi_0 - \Phi_n}_{\text{at most }k}}
+        \leq \CM{\frac{10}{9}}n + \CB k
+    }
+\end{displaymath}

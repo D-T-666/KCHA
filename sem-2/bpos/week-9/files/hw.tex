@@ -1,0 +1,167 @@
+\documentclass{article}
+
+% \usepackage[margin=3cm,top=3cm]{geometry}
+\usepackage{listings}
+\usepackage[inline]{enumitem}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{svg}
+\usepackage{fancyvrb}
+\usepackage{hyperref}
+\usepackage{refcount}
+\usepackage{mips}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{keyword}{rgb}{0.1,0.1,0.4}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{red}{rgb}{0,0.7,0.3}
+
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{keyword},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,      
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,         
+    showspaces=false,                
+    showstringspaces=false,
+    frame=single,
+    numbersep=1.5em,
+    tabsize=6,
+	belowskip=0em
+}
+
+\lstset{language=[mips]Assembler}
+\lstset{style=mystyle}
+
+\title{BPOS: Excercises for week 9}
+\author{student: Dimitri Tabatadze (group: G3)}
+
+\begin{document}
+    \maketitle
+
+	% \pagebreak
+    \section*{Solutions}
+
+    \begin{enumerate}
+        \item {
+			\begin{enumerate}
+				\item {
+                    Since the need for 4 cycles comes from: 
+                    \begin{enumerate*}[label={\roman*)}]
+                        \item translation for fetch,
+                        \item instruction fetch,
+                        \item translation for load/store, and
+                        \item load/store
+                    \end{enumerate*},
+                    we can conclude, that step iii is not needed for the instructginons that don't perform load/store. This will change the pattern the bits $(E, phase)$ go through to this:
+                    \begin{displaymath}
+                        (0, 0), (0, 1), (1, 1).
+                    \end{displaymath}
+                    Where $h.phase$, obviously, is the register we used to split the fetch/execute phases into two subphases.
+                }
+                \item {
+                    We define the regular length $rle(i)$ of execution of
+                    instruction $I(d^i)$ by
+                    \begin{displaymath}
+                        rle(i) = \begin{cases}
+                            2, & \lnot mode(d^i), \\
+                            3, & mode(d^i).
+                        \end{cases}
+                    \end{displaymath}
+                    We define the predicate $intd(i)$ stating that the execution of instruction $I(d^i)$ was interrupted by:
+                    \begin{displaymath}
+                        intd(i) \equiv \exists j < rle(i) : jisr(h^{t(i) + j}, eev_h^{t(i) + j}).
+                    \end{displaymath}
+                    Then the length le(i) of the execution of the instruction is the number of cycles until the first interrupt in case there is one and the regular length of execution otherwise:
+                    \begin{displaymath}
+                        le(i) = \begin{cases}
+                            1 + \min \{j | jisr(h^{t(i) + j}, eev_h^{t(i) + j})\}, & intd(i)\\
+                            rle(i), & \lnot intd(i).
+                        \end{cases}
+                    \end{displaymath}
+                    Now we can define
+                    \begin{displaymath}
+                        t(i + 1) = t(i) + le(i).
+                    \end{displaymath}
+                    As before, interrupts are accumulated during execution of an instruction:
+                    \begin{displaymath}
+                        eev_{isa}^i = \bigvee^{t(i+1)−1}_{t=t(i)} eev_h^t.
+                    \end{displaymath}
+                    Now, we can use Lemma 130 to prove the correctness since this is very simmilar to what we have proven before.
+                }
+			\end{enumerate}
+        }
+        \item {
+            \begin{enumerate}
+                \item can be found in the book, page 379 through 380.
+                \item page 380
+            \end{enumerate}
+            
+        }
+        \item {
+            In any MIPS configuration $d$, two special purpose registers determine the region of memory $d.m$ whose content is interpreted as a single $page table$, namely
+            \begin{itemize}
+                \item {
+                    the page table origin register $d.pto$. It stores the byte address where the page table starts. This address must be aligned to word boundaries, i.e., we require
+                }
+                \item {
+                    the page table length register $d.ptl$. It specifies the number of page table entries in the page table. Page table entries will contain four bytes, thus $d.ptl$ specifies the length of the page table measured in words.
+                }
+            \end{itemize}
+            In user mode, \verb|movg2s| can be used to set $d.pto$ to the start of the memory and $d.ptl$ to the maximum. This will enable access to the whole memory.
+        }
+        \item {}
+        \item {
+            \begin{enumerate}
+                \item {
+                    The whole code:
+                    \begin{itemize}
+                        \lstinputlisting[language=c,lastline=2]{c0/5.c}
+
+                        \item set $spa(d) = spx$
+
+                        \lstinputlisting[language=c,firstline=3,lastline=3,firstnumber=last]{c0/5.c}
+
+                        \item Load the data into the buffer
+                        
+                        \lstinputlisting[language=c,firstline=4,lastline=4,firstnumber=last]{c0/5.c}
+
+                        \item issue write access $cmsr(d) = 2_2 = 10$
+
+                        \lstinputlisting[language=c,firstline=5,lastline=5,firstnumber=last]{c0/5.c}
+
+
+                        \item polling so that we can conclude that the buffer is copied to the swap memory.
+
+                        \lstinputlisting[language=c,firstline=6,firstnumber=last]{c0/5.c}
+                    \end{itemize}
+                }
+                \item {
+                    The correctness proof for this program has one new aspect: we have to argue when disk steps (signaling the completion of a disk access) can occur. Because idle disks do not make steps, there is no disk step before the access is started with the write to the command and status register. Using C\verb|+|A semantics we are looking for execution of two writems procedures in a configuration $y^{j_0}=(d^{j_0}, c^{j_0})$ satisfying
+                    \begin{displaymath}
+                        \begin{aligned}
+                            spa(d^{j_0}) &= va(spx, c)_{28} \\
+                            cmsr(d^{j_0}) &= 2_{32} \\
+                        \end{aligned}
+                    \end{displaymath}
+                    hence
+                    \begin{displaymath}
+                        hdbusy(d^{j_0}).
+                    \end{displaymath}
+                    The ISA portion of the extended C\verb|+|A computation is normal. Thus the disk step signalling the completion of the disk access is reordered to occur before an assembly instruction accessing the disk. During the polling the only such instruction is the load instruction
+                    \begin{lstlisting}[numbers=none]
+lw  3 2 0
+\end{lstlisting}
+                    belonging to the loop body, which samples the command and status register. For $j \geq 1$ let $z(j)$ be extended C\verb|+|A configuration, in which this $lw$ instruction is executed in iteration $j$ of the loop. We denote the corresponding instruction count as
+                    \begin{displaymath}
+                        x(j) = z(j).ic.
+                    \end{displaymath}
+                    If the disk is found to be busy another iteration of the loop follows. Thus the software condition for the liveness of disks in reordered computations from Sect. 14.3.6 of the book is fulfilled. We can apply Lemma 137 and conclude that for some iteration $j_k$ of the loop the disk is idle in ISA configuration $z(j_k).d$ and the loop is left after a successful disk operation. That the desired data is read from the disk follows from the ISA semantics for disks.
+                }
+            \end{enumerate}
+        }
+    \end{enumerate}
+\end{document}

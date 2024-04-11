@@ -1,0 +1,38 @@
+\documentclass{article}
+
+\usepackage{listings}
+
+\title{CA Lab Homework 1}
+\author{Dimitri Tabatadze}
+
+\begin{document}
+    \maketitle
+
+    % \makeindex
+
+    \section*{a}
+
+    \scriptsize
+    \begin{lstlisting}
+begin:  addi $s0,$zero,0	# $s0 = 0
+	addi $s1,$zero,1	# $s1 = 1
+loop:   slt  $t0,$a0,$s1	# if the $a0 is less than $s1, set $t0 to 1
+	bne  $t0,$zero,finish	# if $t0 is not equal to 0, branch to `finish`
+	add  $s0,$s0,$s1	# increment $s0 by $s1
+	addi $s1,$s1,2		# increment $s1 by 2
+	j    loop		# jump back to the start of the loop
+finish: add  $v0,$s0,$zero	# store the value of $s0 in $v0
+    \end{lstlisting}
+
+    \section*{b}
+    \begin{lstlisting}
+int sum = 0;
+for (int i = 0; i < n; i += 2) {
+    sum += i;
+}
+return sum;
+    \end{lstlisting}
+
+    \section*{c}
+    This program computes the sum of all odd numbers from \(0\) to \(n\).
+\end{document}

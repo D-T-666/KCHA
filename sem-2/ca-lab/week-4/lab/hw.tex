@@ -1,0 +1,80 @@
+\documentclass{article}
+
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{svg}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+
+\title{CA Lab: Lab 4}
+\author{student: Dimitri Tabatadze}
+
+\begin{document}
+    \maketitle
+
+    \section*{Task Description} 
+    
+    \begin{enumerate}[label={\alph*)}]
+        \item {Write the equations for the outputs. (15 points)}
+        \item {Create truth table for the inputs X, Y, Z. Fill out the columns of the outputs. (10 points)}
+        \item {Please, write what does this logic circuit represents? (15 points)}
+        \item {Write Verilog HDL code of this logic diagram. (50 points)}
+    \end{enumerate}
+
+    \section*{Solution}
+    
+    \begin{enumerate}[label={\alph*)}]
+        \item {
+            \begin{displaymath}
+                D = Z \oplus X \oplus Y
+            \end{displaymath}
+            \begin{displaymath}
+                B = (\overline{(X \oplus Y)} \land Z) \lor (\overline{X} \land Y)
+            \end{displaymath}
+        }
+        \item \begin{displaymath}
+            \begin{array}{|c c c | c c |}
+                Z & X & Y & D & B \\
+                \hline
+                0 & 0 & 0 & 0 & 0 \\
+                0 & 0 & 1 & 1 & 1 \\
+                0 & 1 & 0 & 1 & 0 \\
+                0 & 1 & 1 & 0 & 0 \\
+                1 & 0 & 0 & 1 & 1 \\
+                1 & 0 & 1 & 0 & 1 \\
+                1 & 1 & 0 & 0 & 0 \\
+                1 & 1 & 1 & 1 & 1 \\
+            \end{array}
+        \end{displaymath}
+        \item This is a full subtractor
+        \item {
+            \begin{lstlisting}
+module mux (
+    input Z,
+    input X,
+    input Y,
+    output D,
+    output B);
+
+assign D = Z ^ X ^ Y;
+assign B = (~(X ^ Y) & Z) | (~X & Y);
+
+endmodule
+            \end{lstlisting}
+        }
+    \end{enumerate}
+
+    \section*{Conclusion}
+    the homework has concluded here.
+    \section*{Reference}
+    there is nothing to reference.
+
+\end{document}

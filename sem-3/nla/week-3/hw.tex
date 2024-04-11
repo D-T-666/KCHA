@@ -1,0 +1,70 @@
+\documentclass{article}
+
+\usepackage{../../classes/kiu}
+
+\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\DeclareMathOperator{\adj}{adj}
+
+\begin{document}
+    \kiuheader{Homework 3}
+    {Numerical Linear Algebra}
+    {Dimitri Tabatadze}
+
+    \begin{center}
+        \large Part 1
+    \end{center}
+
+    \begin{enumerate}
+        \item {
+            To find the condition number, we first choose a norm. Let's pick \(\|\cdot\|_1\) for simplicity sake. Let's also precompute the inverse of \(A\):
+            \begin{displaymath}
+                A^{-1} = \frac{1}{\det(A)}\mat{2 & -2 \\ -1.0001 & 1} = \mat{2/-0.0002 & 2/0.0002 \\ 1.0001/0.0002 & 1/0.0002} = \mat{-10000 & 10000 \\ 5000.5 & 5000}
+            \end{displaymath}
+
+            \begin{displaymath}
+                K(A) = \|A\|_1\|A^{-1}\|_1 = 4\cdot15000.5 = 60002
+            \end{displaymath}
+        }
+        \item {
+            First, let's find the inverse of the matrix \(A = \mat{8 & 5 & 2 \\ 21 & 19 & 16 \\ 39 & 48 & 53}\). 
+            \begin{displaymath}
+                \begin{aligned}
+                    \det(A) 
+                    &= 8\cdot\det\mat{19 & 16 \\ 48 & 53} - 5\cdot\det\mat{21 & 16 \\ 39 & 53} + 2\cdot\det\mat{21 & 19 \\ 39 & 48} \\
+                    &= 8\cdot(19\cdot53-16\cdot48) - 5\cdot(21\cdot53-16\cdot39) + 2\cdot(21\cdot48-19\cdot39) \\
+                    &= 1912 - 2445 + 534 \\
+                    &= 1
+                \end{aligned}
+            \end{displaymath}
+            \begin{displaymath}
+                A^{-1} 
+                = \frac{1}{\det(A)}\mat{C_{11} & C_{21} & C_{31} \\ C_{12} & C_{22} & C_{32} \\ C_{13} & C_{23} & C_{33}}
+                = \mat{239 & -169 & 42 \\ -489 & 346 & -86 \\ 267 & -189 & 47}
+            \end{displaymath}
+            Now, to find \(\mat{x\\y\\z}\) we multiply \(\mat{15 \\ 56 \\ 140}\) by the inverse
+            \begin{displaymath}
+                \mat{x\\y\\z} 
+                = A^{-1}\mat{15 \\ 56 \\ 140} 
+                = \mat{1 \\ 1 \\ 1}
+            \end{displaymath}
+            and now if we change the 15 to 14, we get
+            \begin{displaymath}
+                \mat{\tilde{x}\\\tilde{y}\\\tilde{z}} 
+                = A^{-1}\mat{14 \\ 56 \\ 140} 
+                = \mat{-238 \\ 490 \\ -266}.
+            \end{displaymath}
+            It's clear that with relatively tiny perturbation, the error is very big, therefore this matrix can be considered to be ill-conditioned.
+        }
+        \item {
+            Let \(A=\mat{1 & 2 \\ 3 & 4}\) and \(b = \mat{3 \\ 7}\)
+            \begin{displaymath}
+                Ax = b \implies x = A^{-1}b = \frac{1}{-2}\mat{4 & -2 \\ -3 & 1}\mat{3 \\ 7} = \mat{1 \\ 1}
+            \end{displaymath}
+            now, if we perturbate \(b\) by \(\Delta b = \mat{0.0001 \\ 0.0001}\) to get \(\tilde{b} = b + \Delta b = \mat{3.0001 \\ 7.0001}\)
+            \begin{displaymath}
+                \tilde{x} = A^{-1}\tilde{b} = \frac{1}{-2}\mat{4 & -2 \\ -3 & 1}\mat{3.0001 \\ 7.0001} = \mat{1.0001 \\ 1.0001}
+            \end{displaymath}
+            We can see that by tiny perturbation, the error is also very tiny, so the matrix can be considered well-conditioned.
+        }
+    \end{enumerate}
+\end{document}

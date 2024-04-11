@@ -1,0 +1,182 @@
+\documentclass{article}
+
+\usepackage{../../classes/dim}
+\usepackage{listings}
+
+\begin{document}
+    \header{Homework}
+    {Algorithms and Data Structures}
+
+    \begin{center}
+        \large
+        Worksheet 3
+    \end{center}
+    \begin{tasks}
+        \item {
+            \begin{enumerate}
+                \item {
+                    \((S, p)\) would be a probability space if \(\sum_{s\in S}p(s) = 1\). 
+                    \begin{proof}
+                        by induction on n:
+                        \paragraph*{Base case:} \(n = 1\)
+                        \begin{displaymath}
+                            p(s_1) = p_1(s_1), \sum_{s_1\in S_1}p_1(s_1) = 1 \implies \sum_{s\in S}p(s) = 1
+                        \end{displaymath}
+                        \paragraph*{Induction step:}
+                        \begin{displaymath}
+                            \begin{aligned}
+                                \sum_{s_n\in S_n}p(S_1, \dots, S_{n-1}, s_n) 
+                                &= \sum_{s_n\in S_n}p(S_1, \dots, S_{n-1})p_n(s_n) \\
+                                &= p(S_1, \dots, S_{n-1})\cdot\sum_{s_n\in S_n}p_n(s_n) \\
+                                &= p(S_1, \dots, S_{n-1})\cdot1 \\
+                                &= 1 \\
+                            \end{aligned}
+                        \end{displaymath}
+                    \end{proof}
+                }
+                \item {
+                    Let \(Y_i = \bigtimes_{j\neq i} S_j\). Then \(e_i(A_i) = A_i \times Y_i\) since the order doesn't really matter.
+                    \begin{displaymath}
+                        \begin{aligned}
+                            p(e_i(A_i))
+                            &= \sum_{(s_1, s_2, \dots, s_n)\in A_i \times Y_i}p_1(s_1)\cdot p_2(s_2)\cdot\dots\cdot p_n(s_n) \\
+                            &= \sum_{s_i \in A_i}\sum_{(s_1, \dots, s_{i-1}, s_{i+1}, \dots, s_n)\in Y_i}p_1(s_1)\cdot\dots\cdot p_{i-1}(s_{i-1})\cdot p_i(s_i)\cdot p_{i+1}(s_{i+1})\cdot\dots\cdot p_n(s_n) \\
+                            &= \sum_{s_i \in A_i}p_i(s_i)\cdot\left(\sum_{(s_1, \dots, s_{i-1}, s_{i+1}, \dots, s_n)\in Y_i}p_1(s_1)\cdot\dots\cdot p_{i-1}(s_{i-1})\cdot p_{i+1}(s_{i+1})\cdot\dots\cdot p_n(s_n)\right) \\
+                            &= \sum_{s_i \in A_i}p_i(s_i)\cdot1 \\
+                            &= p_i(A_i)
+                        \end{aligned}
+                    \end{displaymath}
+                }
+            \end{enumerate}
+        }
+        \item {
+            The expected value of a single item is  \(3\cdot\frac{49}{50}-80\cdot\frac{1}{50} = \frac{147-80}{50} = \frac{67}{50}\) which is positive, meaning the company would make money in the long run.
+        }
+        \item {
+            Let the induction hypothesis be that
+            \begin{displaymath}
+                E\left(\sum_{i=1}^{n}X_i\right) = \sum_{i=1}^{n}E(X_i)
+            \end{displaymath}
+
+            \begin{proof}
+                by induction on \(n\)
+                
+                \paragraph*{Base case.} \(n = 1\)
+                \begin{displaymath}
+                    E\left(\sum_{i=1}^{1}X_i\right) 
+                    = E(X_1)
+                    = \sum_{i=1}^{1}E(X_i)
+                \end{displaymath}
+                
+                \paragraph*{Induction step.} \(n \to n+1\)
+                \begin{displaymath}
+                    \begin{aligned}
+                        \sum_{i=1}^{n}E(X_i) + E(X_{n+1})
+                        &= \sum_{i=1}^{n+1}E(X_i) \\
+                        &= E\left(\sum_{i=1}^{n+1}X_i\right)
+                    \end{aligned}
+                \end{displaymath}
+            \end{proof}
+        }
+        \item {
+            Let's build from ground up:
+            \begin{itemize}
+                \item {
+                    \begin{displaymath}
+                        Q_0 = \{\perp\},\quad q_0(\perp) = 1
+                    \end{displaymath}
+                }
+                \item {
+                    \begin{displaymath}
+                        Q_1 = \{\perp\},\quad q_1(\perp) = 1
+                    \end{displaymath}
+                }
+                \item {
+                    \begin{displaymath}
+                        Q_2 = \{(1, \perp, \perp), (2, \perp, \perp)\},\quad q_2(i, a, b) = \frac{1}{2}
+                    \end{displaymath}
+                }
+                \item {
+                    \begin{gather*}
+                        Q_3 = \{
+                            (1, \perp, (1, \perp, \perp)), 
+                            (1, \perp, (2, \perp, \perp)), 
+                            (2, \perp, \perp), 
+                            (3, (1, \perp, \perp), \perp), 
+                            (3, (2, \perp, \perp), \perp)
+                        \}\\
+                        q_3(i, a, b) 
+                        = \frac{1}{3}\cdot q_{i-1}(a) \cdot q_{3-i}(b)
+                        = \begin{cases}
+                            \frac{1}{6} & \text{if } (i, a, b) = (1, \perp, (1, \perp, \perp)) \\
+                            \frac{1}{6} & \text{if } (i, a, b) = (1, \perp, (2, \perp, \perp)) \\
+                            \frac{1}{3} & \text{if } (i, a, b) = (2, \perp, \perp) \\
+                            \frac{1}{6} & \text{if } (i, a, b) = (3, (1, \perp, \perp), \perp) \\
+                            \frac{1}{6} & \text{if } (i, a, b) = (3, (2, \perp, \perp), \perp)
+                        \end{cases}
+                    \end{gather*}
+                }
+                \item {
+                    \begin{gather*}
+                        \begin{aligned}
+                            Q_4 = \{
+                                & (1, \perp, (1, \perp, (1, \perp, \perp))), \\
+                                & (1, \perp, (1, \perp, (2, \perp, \perp))), \\
+                                & (1, \perp, (2, \perp, \perp)), \\
+                                & (1, \perp, (3, (1, \perp, \perp), \perp)), \\
+                                & (1, \perp, (3, (2, \perp, \perp), \perp)), \\
+                                & (2, \perp, (1, \perp, \perp)), \\
+                                & (2, \perp, (2, \perp, \perp)), \\
+                                & (3, (1, \perp, \perp), \perp), \\
+                                & (3, (2, \perp, \perp), \perp), \\
+                                & (4, (1, \perp, (1, \perp, \perp)), \perp), \\
+                                & (4, (1, \perp, (2, \perp, \perp)), \perp), \\
+                                & (4, (2, \perp, \perp), \perp), \\
+                                & (4, (3, (1, \perp, \perp), \perp), \perp), \\
+                                & (4, (3, (2, \perp, \perp), \perp), \perp)
+                            \}
+                        \end{aligned}\\
+                        q_4(i, a, b) 
+                        = \frac{1}{4}\cdot q_{i-1}(a)\cdot q_{4-i}(b)
+                        = \begin{cases}
+                            \frac{1}{24} & \text{if } i = 1, b \not\in Q_2 \\
+                            \frac{1}{12} & \text{if } i = 1, b \in Q_2 \\
+                            \frac{1}{8} & \text{if } i \in \{2, 3\} \\
+                            \frac{1}{12} & \text{if } i = 4, a \in Q_2 \\
+                            \frac{1}{24} & \text{if } i = 4, a \not\in Q_2
+                        \end{cases}
+                    \end{gather*}
+                }
+            \end{itemize}
+            it's clear that if you sum up the probabilities, you'll get 1.
+            \begin{displaymath}
+                \begin{aligned}
+                    t_3(1, \perp, (1, \perp, \perp)) &= 2 + 0 + 1 + 0 + 0 = 3 \\
+                    t_3(1, \perp, (2, \perp, \perp)) &= 2 + 0 + 1 + 0 + 0 = 3 \\
+                    t_3(2, \perp, \perp) &= 2 + 0 + 0 = 2 \\
+                    t_3(3, (1, \perp, \perp), \perp) &= 2 + 1 + 0 + 0 + 0 = 3 \\
+                    t_3(3, (2, \perp, \perp), \perp) &= 2 + 1 + 0 + 0 + 0 = 3
+                \end{aligned}
+            \end{displaymath}
+            \begin{displaymath}
+                \begin{aligned}
+                    t_4(1, \perp, (1, \perp, (1, \perp, \perp))) &= 3 + 0 + 2 + 0 + 1 + 0 + 0 = 6 \\
+                    t_4(1, \perp, (1, \perp, (2, \perp, \perp))) &= 3 + 0 + 2 + 0 + 1 + 0 + 0 = 6 \\
+                    t_4(1, \perp, (2, \perp, \perp)) &= 3 + 0 + 2 + 0 + 0 = 5 \\
+                    t_4(1, \perp, (3, (1, \perp, \perp), \perp)) &= 3 + 0 + 2 + 1 + 0 + 0 + 0 = 6 \\
+                    t_4(1, \perp, (3, (2, \perp, \perp), \perp)) &= 3 + 0 + 2 + 1 + 0 + 0 + 0 = 6 \\
+                    t_4(2, \perp, (1, \perp, \perp)) &= 3 + 0 + 1 + 0 + 0 = 4 \\
+                    t_4(2, \perp, (2, \perp, \perp)) &= 3 + 0 + 1 + 0 + 0 = 4 \\
+                    t_4(3, (1, \perp, \perp), \perp) &= 3 + 1 + 0 + 0 + 0 = 4 \\
+                    t_4(3, (2, \perp, \perp), \perp) &= 3 + 1 + 0 + 0 + 0 = 4 \\
+                    t_4(4, (1, \perp, (1, \perp, \perp)), \perp) &= 3 + 2 + 0 + 1 + 0 + 0 + 0 = 6 \\
+                    t_4(4, (1, \perp, (2, \perp, \perp)), \perp) &= 3 + 2 + 0 + 1 + 0 + 0 + 0 = 6 \\
+                    t_4(4, (2, \perp, \perp), \perp) &= 3 + 2 + 0 + 0 + 0 = 5 \\
+                    t_4(4, (3, (1, \perp, \perp), \perp), \perp) &= 3 + 2 + 1 + 0 + 0 + 0 + 0 = 6 \\
+                    t_4(4, (3, (2, \perp, \perp), \perp), \perp) &= 3 + 2 + 1 + 0 + 0 + 0 + 0 = 6
+                \end{aligned}
+            \end{displaymath}
+            I actually wrote a script to generate most the mathematics that's written above :)
+        }
+    \end{tasks}
+\end{document}

@@ -1,0 +1,115 @@
+$date
+	Fri Jun  2 23:57:46 2023
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module pc_tb $end
+$var wire 32 ! PC_out [31:0] $end
+$var wire 32 " Mout [31:0] $end
+$var wire 32 # Iout [31:0] $end
+$var wire 1 $ E $end
+$var reg 1 % Clock $end
+$var reg 32 & Next_PC [31:0] $end
+$var reg 1 ' Reset $end
+$var reg 1 ( S $end
+$var reg 32 ) data_addr_in [31:0] $end
+$var reg 32 * data_in [31:0] $end
+$scope module UUT $end
+$var wire 1 % Clock $end
+$var wire 32 + Next_PC [31:0] $end
+$var wire 32 , PC_out [31:0] $end
+$var wire 1 ' Reset $end
+$var wire 1 ( S $end
+$var wire 32 - data_addr_in [31:0] $end
+$var wire 32 . data_in [31:0] $end
+$var reg 1 $ E $end
+$var reg 32 / I [31:0] $end
+$var reg 32 0 Iout [31:0] $end
+$var reg 32 1 Mout [31:0] $end
+$var reg 32 2 pc [31:0] $end
+$var integer 32 3 i [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b100000 3
+b0 2
+bx 1
+bx 0
+bx /
+b0 .
+b0 -
+b0 ,
+b0 +
+b0 *
+b0 )
+0(
+1'
+b0 &
+0%
+0$
+bx #
+bx "
+b0 !
+$end
+#5
+1%
+#10
+0%
+0'
+#15
+1$
+1%
+#20
+0%
+b10010001101000101011001111000 *
+b10010001101000101011001111000 .
+b1000 )
+b1000 -
+1(
+b100 &
+b100 +
+#25
+0$
+1%
+#30
+0%
+#35
+b0 "
+b0 1
+b0 /
+b100 !
+b100 ,
+b100 2
+1$
+1%
+#40
+0%
+#45
+b0 #
+b0 0
+0$
+1%
+#50
+0%
+b10011010101111001101111011110000 *
+b10011010101111001101111011110000 .
+0(
+b1000 &
+b1000 +
+#55
+b10010001101000101011001111000 "
+b10010001101000101011001111000 1
+b10010001101000101011001111000 /
+b1000 !
+b1000 ,
+b1000 2
+1$
+1%
+#60
+0%

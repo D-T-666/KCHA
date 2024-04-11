@@ -1,0 +1,94 @@
+\documentclass{article}
+
+\usepackage{soul}
+\usepackage[dark,showauthor]{../../../classes/dim}
+
+\usepackage[normalem]{ulem}
+\usepackage{mathtools}
+
+\usepackage{listings}
+\lstset{
+language=Python,
+basicstyle=\ttfamily\footnotesize,
+morekeywords={self},              % Add keywords here
+keywordstyle=\color{r},
+emph={MyClass,__init__},          % Custom highlighting
+emphstyle=\color{r},    % Custom highlighting style
+stringstyle=\color{g},
+frame=tb,                         % Any extra options here
+showstringspaces=false
+}
+
+\DeclareMathOperator{\adj}{adj}
+
+\begin{document}
+    \header{Homework}
+    {Numerical Linear Algebra}
+
+    \begin{tasks}
+        \item The steps:
+        \begin{enumerate}[label={(\arabic*)}]
+            \item \begin{displaymath}
+                \begin{gathered}
+                    r_0 = b - Ax_0 = \mat{1 \\ 0 \\ 0} - \mat{0 \\ 0 \\ 0} = \mat{1 \\ 0 \\ 0} \\
+                    \alpha_0 = \frac{\langle Ar_0, r_0\rangle}{\langle Ar_0, Ar_0 \rangle} 
+                    = \frac{\left\langle \mat{1 \\ 0 \\ 1}, \mat{1 \\ 0 \\ 0}\right\rangle}{\left\langle \mat{1 \\ 0 \\ 1}, \mat{1 \\ 0 \\ 1}\right\rangle} 
+                    = \frac{1}{2} \\
+                    x_1 = x_0 + \alpha_0r_0 = \mat{1/2 \\ 0 \\ 0}
+                \end{gathered}
+            \end{displaymath}
+            \item \begin{displaymath}
+                \begin{gathered}
+                    r_1 = b - Ax_1 = \mat{1 \\ 0 \\ 0} - \mat{1/2 \\ 0 \\ 1/2} = \mat{1/2 \\ 0 \\ -1/2} \\
+                    \alpha_1 = \frac{\langle Ar_1, r_1\rangle}{\langle Ar_1, Ar_1 \rangle} 
+                    = \frac{\left\langle \mat{1/2 \\ 0 \\ 0}, \mat{1/2 \\ 0 \\ -1/2}\right\rangle}{\left\langle \mat{1/2 \\ 0 \\ 0}, \mat{1/2 \\ 0 \\ 0}\right\rangle} 
+                    = 1 \\
+                    x_2 = x_1 + \alpha_1r_1 = \mat{1 \\ 0 \\ -1/2}
+                \end{gathered}
+            \end{displaymath}
+            \item \begin{displaymath}
+                \begin{gathered}
+                    r_2 = b - Ax_2 = \mat{1 \\ 0 \\ 0} - \mat{1 \\ 0 \\ -1/2} = \mat{0 \\ 0 \\ 1/2} \\
+                    \alpha_2 = \frac{\langle Ar_2, r_2\rangle}{\langle Ar_2, Ar_2 \rangle} 
+                    = \frac{\left\langle \mat{0 \\ 0 \\ 1/2}, \mat{0 \\ 0 \\ 1/2}\right\rangle}{\left\langle \mat{0 \\ 0 \\ 1/2}, \mat{0 \\ 0 \\ 1/2}\right\rangle} 
+                    = 1 \\
+                    x_3 = x_2 + \alpha_2r_2 = \mat{1 \\ 0 \\ -1}
+                \end{gathered}
+            \end{displaymath}
+            \item \begin{displaymath}
+                \begin{gathered}
+                    r_2 = b - Ax_3 = \mat{1 \\ 0 \\ 0} - \mat{1 \\ 0 \\ -1} = \mat{0 \\ 0 \\ 0} \\
+                \end{gathered}
+            \end{displaymath}
+            stop.
+        \end{enumerate}
+        \item \begin{enumerate}
+            \item \begin{displaymath}
+                A 
+                = \mat{1 & 2 \\ 1 & 1} 
+                = \mat{\frac{1}{\sqrt{2}} & \frac{1}{2\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{2\sqrt{2}}}
+                \mat{\sqrt{2} & \sqrt{2} \\ 0 & \sqrt{2}} 
+                = QR
+            \end{displaymath}
+            \item \begin{displaymath} % 23/9 -50/9 -2/9  529+2500+4/81  3033/3^3  337/9 
+                A 
+                = \mat{2 & 3 \\ -2 & -6 \\ 1 & 0} 
+                = \mat{\frac29 & \frac{23}{3\sqrt{337}} \\ -\frac29 & -\frac{50}{3\sqrt{337}} \\ \frac19 & -\frac{2}{3\sqrt{337}}}
+                \mat{\sqrt{2} & 2 \\ 0 & \frac{\sqrt{337}}{3}} 
+                = QR
+            \end{displaymath}
+        \end{enumerate}
+        \item \begin{enumerate}
+            \item \begin{displaymath}
+                \begin{gathered}    
+                    \mat{2 & 3 \\ -2 & -6 \\ 1 & 0} \mat{x_1 \\ x_2} = \mat{3 \\ -3 \\ 6} \\
+                    R\mat{x_1 \\ x_2} = Q^T\mat{3 \\ -3 \\ 6} \\
+                    \mat{\sqrt{2} & 2 \\ 0 & \frac{\sqrt{337}}{3}}\mat{x_1 \\ x_2}
+                    = \mat{\frac29 & -\frac29 & \frac19  \\ \frac{23}{3\sqrt{337}} & -\frac{50}{3\sqrt{337}} & -\frac{2}{3\sqrt{337}}} \mat{3 \\ -3 \\ 6} \\
+                    = \mat{2 \\ \frac{77}{\sqrt{337}}} \\
+                    \mat{x_1 \\ x_2} = \mat{\frac{229}{\sqrt{2}} \\ 231}
+                \end{gathered}
+            \end{displaymath}
+        \end{enumerate}
+    \end{tasks}
+\end{document}

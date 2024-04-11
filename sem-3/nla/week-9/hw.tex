@@ -1,0 +1,148 @@
+\documentclass{article}
+
+\usepackage{../../classes/kiu}
+
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
+\definecolor{lightgray}{RGB}{250, 160, 160}
+\usepackage{mathtools}
+
+\DeclareMathOperator{\adj}{adj}
+
+\begin{document}
+    \kiuheader{Homework}
+    {Numerical Linear Algebra}
+    {Dimitri Tabatadze}
+
+    \begin{enumerate}
+        \item {
+            We can rewrite the system in matrix form:
+            \begin{displaymath}
+                \begin{cases}
+                    2x_1 + \phantom{2}x_2 \phantom{\phantom{}+ 3x_3} = 3 \\
+                    \phantom{2}x_1 + 2x_2 + \phantom{3}x_3 = -2 \\
+                    \phantom{2_x1 + \phantom{}} 2x_2 + 3x_3 = 0
+                \end{cases}
+                \implies
+                \mat{
+                    2 & 1 & 0 \\ 1 & 2 & 1 \\ 0 & 2 & 3
+                }
+                \mat{x_1 \\ x_2 \\ x_3} = \mat{3 \\ -2 \\ 0}.
+            \end{displaymath}
+            Now we do \(LU\) factorization on the matrix:
+            \begin{displaymath}
+                \mat{
+                    2 & 1 & 0 \\ 1 & 2 & 1 \\ 0 & 2 & 3
+                } = LU = \mat{
+                    \alpha_1 & 0 & 0 \\ 1 & \alpha_2 & 0 \\ 0 & 2 & \alpha_3
+                }\mat{
+                    1 & \beta_1 & 0 \\ 0 & 1 & \beta_2 \\ 0 & 0 & 1
+                }
+            \end{displaymath}
+            where
+            \begin{displaymath}
+                \begin{aligned}
+                    1 \cdot \alpha_1 &= 2 
+                    &\implies& \alpha_1 = 2 \\
+                    \beta_1 \cdot \alpha_1 &= \beta_1 \cdot2  = 1 
+                    &\implies& \beta_1 = 1/2 \\
+                    \beta_1 + \alpha_2 &= 1/2 + \alpha_2 = 2 
+                    &\implies& \alpha_2 = 3/2 \\
+                    \beta_2 \cdot \alpha_2 &= \beta_2 \cdot 3/2
+                    &\implies& \beta_2 = 2/3 \\
+                    2\beta_2 + \alpha_3 &= 4/3 + \alpha_3 = 3
+                    &\implies& \alpha_3 = 5/3
+                \end{aligned}
+            \end{displaymath}
+            giving us
+            \begin{displaymath}
+                L = \mat{2 & 0 & 0 \\ 1 & 3/2 & 0 \\ 0 & 2 & 5/3},
+                U = \mat{1 & 1/2 & 0 \\ 0 & 1 & 2/3 \\ 0 & 0 & 1}.
+            \end{displaymath}
+
+            Now, we do back-substiturion and forward-substiturion separately on \(U\) and \(L\).
+
+            \begin{displaymath}
+                \begin{aligned}
+                    U\vec{t} = 
+                    \mat{1 & 1/2 & 0 \\ 0 & 1 & 2/3 \\ 0 & 0 & 1}
+                    \mat{t_1 \\ t_2 \\ t_3} &=
+                    \mat{3 \\ -2 \\ 0} \implies
+                    \mat{t_1 \\ t_2 \\ t_3} =
+                    \mat{4 \\ -2 \\ 0} & \text{(via back-substiturion)} \\
+                    LU\vec{t} = 
+                    \mat{2 & 0 & 0 \\ 1 & 3/2 & 0 \\ 0 & 2 & 5/3}
+                    \mat{x_1 \\ x_2 \\ x_3} &= 
+                    \mat{4 \\ -2 \\ 0} \implies
+                    \mat{x_1 \\ x_2 \\ x_3} = 
+                    \mat{2 \\ -8/3 \\ 16/5} & \text{(via forward-substiturion)}
+                \end{aligned}
+            \end{displaymath}
+        }
+        \item{
+            \begin{enumerate}
+                \item {
+                    \begin{displaymath}
+                        \begin{gathered}
+                            \mat{3&1&2\\6&3&4\\3&1&5} \overset{r_2-2r_1, r_3-r_1}{\longrightarrow}
+                            \mat{3&1&2\\0&1&0\\0&0&3} \\
+                            \mat{3&1&2\\6&3&4\\3&1&5} =
+                            \mat{1&0&0\\2&1&0\\1&0&1}
+                            \mat{3&1&2\\0&1&0\\0&0&3}
+                        \end{gathered}
+                    \end{displaymath}
+                }
+                \item {
+                    \begin{displaymath}
+                        \begin{gathered}
+                            \mat{1&-1&0\\2&2&3\\-1&3&2} \overset{r_2-2r_1, r_3+r_1}{\longrightarrow}
+                            \mat{1&-1&0\\0&4&3\\0&2&2} \overset{r_3-r_2\cdot1/2}{\longrightarrow}
+                            \mat{1&-1&0\\0&4&3\\0&0&1/2}
+                            \\
+                            \mat{1&-1&0\\2&2&3\\-1&3&2} =
+                            \mat{1&0&0\\2&1&0\\-1&1/2&1}
+                            \mat{1&-1&0\\0&4&3\\0&0&1/2}
+                        \end{gathered}
+                    \end{displaymath}
+                }
+            \end{enumerate}
+        }
+        \item {
+            \begin{enumerate}
+                \item {
+                    \begin{displaymath}
+                        PA =
+                        \mat{0&1&0\\1&0&0\\0&0&1}
+                        \mat{0&2&-1\\1&-1&2\\1&-1&4} =
+                        \mat{1&-1&2\\0&2&-1\\1&-1&4}
+                    \end{displaymath}
+                }
+                \item {
+                    \begin{displaymath}
+                        PA =
+                        \mat{1&0&0&0\\0&0&0&1\\0&0&1&0\\0&1&0&0}
+                        \mat{1&1&-1&2\\-1&-1&1&5\\2&2&3&7\\2&3&4&5} =
+                        \mat{
+                            1&1&-1&2\\
+                            2&3&4&5\\
+                            2&2&3&7\\
+                            -1&-1&1&5\\
+                        }
+                    \end{displaymath}
+                }
+            \end{enumerate}
+        }
+        \item {
+            \begin{displaymath}
+                \begin{gathered}
+                    \mat{4&2&0\\4&4&2\\2&2&3}
+                    \overset{r_2-r_1, r_3-r_2\cdot1/2}{\longrightarrow}
+                    \mat{4&2&0\\0&2&2\\0&0&2}\\
+                    D = \mat{4&0&0\\0&2&0\\0&0&2},
+                    U = \mat{1&1/2&0\\0&1&1/2\\0&0&1},
+                    L = \mat{1&0&0\\1&1&0\\0&2&1}
+                \end{gathered}
+            \end{displaymath}
+        }
+    \end{enumerate}
+\end{document}

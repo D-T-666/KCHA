@@ -1,0 +1,143 @@
+\documentclass{article}
+
+% \usepackage[margin=3cm,top=3cm]{geometry}
+\usepackage{listings}
+\usepackage[inline]{enumitem}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{svg}
+\usepackage{fancyvrb}
+\usepackage{hyperref}
+\usepackage{refcount}
+\usepackage{mips}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{keyword}{rgb}{0.1,0.1,0.4}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{red}{rgb}{0,0.7,0.3}
+
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{keyword},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,      
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,         
+    showspaces=false,                
+    showstringspaces=false,
+    frame=single,
+    numbersep=1.5em,
+    tabsize=6,
+	belowskip=0em
+}
+
+\lstset{language=[mips]Assembler}
+\lstset{style=mystyle}
+
+\title{BPOS: Excercises for week 9}
+\author{student: Dimitri Tabatadze (group: G3)}
+
+\begin{document}
+    \maketitle
+
+	% \pagebreak
+    \section*{Solutions}
+
+    \begin{enumerate}
+        \item {
+			\begin{enumerate}
+				\item {
+                    Let:
+                    \begin{displaymath}
+                        RF \in \{gpr, spr\}
+                    \end{displaymath}
+                    If machine $vm(u)$ is running, then each register $gpr(i_5)$ is found in the corresponding register of the host:
+                    \begin{displaymath}
+                        \begin{aligned}
+                            cvm.vm(u).gpr(i_5) &= d.gpr(i_5)
+                        \end{aligned}
+                    \end{displaymath}
+                }
+                \item {
+                    If user machine $vm(d, c, u)$ is suspended, then each general-purpose register $gpr(i_5)$ is found in the corresponding entry of its process control block:
+                    \begin{displaymath}
+                        cvm.vm(u).gpr(i_5) = va(PCB[u].gpr[i], k)_{32}
+                    \end{displaymath}
+                }
+                \item {
+                    CVM concrete kernel (I2OS-31), slide 39
+
+                    Definitions:
+                    \begin{itemize}
+                        \item running: the hardware registers
+                        \item suspended: the saved registers in PCB
+                    \end{itemize}
+                }
+            \end{enumerate}
+        }
+        \item {
+            \begin{enumerate}
+                \item {
+                    If machine $vm(u)$ is running, then each special purpose register $RF(i_5)$ is found in the corresponding register of the host. The program counter is found in the $pc$ of the host:
+                    \begin{displaymath}
+                        \begin{aligned}
+                            vmrun(d,k,u).spr(i_5) &= d.spr(i_5) \\
+                            vmrun(d,k,u).pc &= d.pc
+                        \end{aligned}
+                    \end{displaymath}
+                }
+                \item {
+                    \begin{displaymath}
+                        \begin{aligned}
+                            cvm.vm(u).eca &= va(PCB[u].spr[2], k)_{32} \\
+                            cvm.vm(u).edata &= va(PCB[u].spr[4], k)_{32} \\
+                            cvm.vm(u).sr &= va(PCB[u].spr[1], k)_{32} \\
+                            cvm.vm(u).pc &= va(PCB[u].spr[3], k)_{32}
+                        \end{aligned}
+                    \end{displaymath}
+                }
+                \item {
+                    CVM concrete kernel (I2OS-31), slide 39
+
+                    Definitions:
+                    \begin{itemize}
+                        \item running: the hardware registers
+                        \item suspended: the saved registers in PCB
+                    \end{itemize}
+                }
+            \end{enumerate}
+        }
+        \item {
+            \begin{enumerate}
+                \item {
+                    \begin{displaymath}
+                        cvm.vm(u).m(a) = d.m(pma(k,u,a))
+                    \end{displaymath}
+                }
+                \item {
+                    \begin{displaymath}
+                        cvm.vm(u).m(a) = byte(\langle a.bx\rangle d.sm(sma(u,a.px)))
+                    \end{displaymath}
+                }
+                \item {
+                    CVM concrete kernel (I2OS-31), slide 39, 
+                    
+                    Definitions:
+                    \begin{itemize}
+                        \item Swap memory base (page) address
+                    \end{itemize}
+                }
+            \end{enumerate}
+        }
+        \item {
+            Unlike $sr$ and $pc$ which get saved into $esr$ and $epc$ if an interrupt occurs, $eca$ and $edata$ are not.
+        }
+        % \item {
+        %     \begin{enumerate}
+        %         \item 
+        %     \end{enumerate}
+        % }
+    \end{enumerate}
+\end{document}

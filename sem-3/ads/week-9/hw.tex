@@ -1,0 +1,257 @@
+\documentclass{article}
+
+\usepackage[dark,horizontal,christmas]{../../../classes/dim}
+
+\DeclareMathOperator{\dfs}{dfs}
+\DeclareMathOperator{\concat}{\bigcirc}
+
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{tkz-graph}
+\tikzset{
+    Bullet/.style={circle,draw=faded,ultra thick,minimum width=2em}
+}
+% \tikzset{Vertex/.style = {color=background,text=text}}
+% \usetikzlibrary{positioning}
+\usepackage{multicol}
+
+% \title{Homework Algorithms and Data Structures}
+% \author{Nika Tamliani}
+
+\begin{document}
+    \header{Homework}
+    {Algorithms and Data Structures}
+    % \maketitle
+
+    \begin{center} \LARGE Worksheet 9 \end{center}
+    \begin{tasks}
+        \item {
+            The given function can be rewritten as
+            \begin{displaymath}
+                \begin{aligned}
+                    sub(x, 0) &= x \\
+                    sub(x, y+1) &= p(sub(x, y))
+                \end{aligned}
+            \end{displaymath}
+            \begin{proof}
+                by induction on \(y\).
+                
+                \paragraph{Base case} \(y = 0\)
+                \begin{displaymath}
+                    \begin{aligned}
+                        sub(x, 0) 
+                        &= x - 0 \\
+                        &= x
+                    \end{aligned}
+                \end{displaymath}
+                
+                \paragraph{Induction step} \(y\to y+1\)
+                \begin{displaymath}
+                    \begin{aligned}
+                        sub(x, y+1) 
+                        &= x - y - 1 \\
+                        &= sub(x, y) - 1 & \text{(induction hypothesis)} \\
+                        &= p(sub(x, y))
+                    \end{aligned}
+                \end{displaymath}
+            \end{proof}
+        }
+        \item {
+            With the definition
+            \begin{displaymath}
+                A_k(j) = \begin{cases}
+                    j+1 & \text{if } k = 0 \\
+                    A_{k-1}^{(j+1)}(j) & \text{if } k \neq 0
+                \end{cases}
+            \end{displaymath}
+            we can plug in the numbers to see that
+            \begin{displaymath}
+                \begin{aligned}
+                    A_2(j)
+                    &= A_1^{(j+1)}(j) \\
+                    &= 2^{j+1}(j+1) - 1.
+                \end{aligned}
+            \end{displaymath}
+            \begin{proof}
+                \(A_1^{(n)}(j) = 2^n(j + 1) - 1\)
+                \paragraph{Base case} \(n = 1\)
+                \begin{displaymath}
+                    A_1(j) = 2j + 1 = 2^1(j + 1) - 1
+                \end{displaymath}
+
+                \paragraph{Induction step} \(n \to n+1\)
+                \begin{displaymath}
+                    \begin{aligned}
+                        A_1^{(n+1)}(j) 
+                        &= A_1(A_1^{(n)}(j)) \\
+                        &= 2A_1^{(n)}(j) + 1 \\
+                        &= 2(2^n(j + 1) - 1) + 1 \\
+                        &= 2^{n+1}(j + 1) - 2 + 1 \\
+                        &= 2^{n+1}(j + 1) - 1 \\
+                    \end{aligned}
+                \end{displaymath}
+            \end{proof}
+        }
+        \item {
+            \begin{minipage}[t]{0.5\linewidth}
+                \begin{figure}[H]
+                    \centering
+                    \begin{tikzpicture}
+                        \tikzset{VertexStyle/.style =
+                            {draw,
+                            shape = circle,
+                            color = text}}
+                        \SetUpEdge[
+                            color = text,
+                            labelcolor = white,
+                            labeltext = red,
+                            labelstyle = {text=text,fill=background}]
+
+                        \Vertex[x=0,y=0]{A}
+                        \Vertex[x=1.25,y=2]{B}
+                        \Vertex[x=2.5,y=0]{C}
+                        \Vertex[x=1.25,y=-2]{D}
+                        \Vertex[x=-1.25,y=-2]{E}
+                        \Vertex[x=-2.5,y=0]{F}
+                        \Vertex[x=-1.25,y=2]{G}
+                        % \tikzstyle{LabelStyle}=[text=text, color=background]
+                        % \tikzstyle{EdgeStyle}=[color=text]
+                        \SetUpEdge[
+                            color = faded,
+                            labelstyle = {text=faded,fill=background}]
+                        \Edge[label=$3$](A)(B)
+                        \Edge[label=$4$](A)(D)
+                        \Edge[label=$3$](A)(E)
+                        \Edge[label=$7$](A)(F)
+                        \Edge[label=$8$](E)(F)
+                        \Edge[label=$6$](G)(B)
+                        \SetUpEdge[
+                            color = hilight,
+                            labelstyle = {text=hilight,fill=background}]
+                        \Edge[label=$2$](A)(C)
+                        \Edge[label=$6$](A)(G)
+                        \Edge[label=$2$](B)(C)
+                        \Edge[label=$3$](C)(D)
+                        \Edge[label=$1$](D)(E)
+                        \Edge[label=$6$](F)(G)
+                    \end{tikzpicture}
+                    \caption{spanning tree with cost of 20}
+                    \label{fig:hg:main}
+                \end{figure}
+            \end{minipage}
+            \begin{minipage}[t]{0.5\linewidth}
+                \begin{figure}[H]
+                    \centering
+                    \begin{tikzpicture}
+                        \tikzset{VertexStyle/.style =
+                            {draw,
+                            shape = circle,
+                            color = text}}
+                        \SetUpEdge[
+                            color = text,
+                            labelstyle = {text=text,fill=background}]
+
+                        \Vertex[x=0,y=0]{A}
+                        \Vertex[x=1.25,y=2]{B}
+                        \Vertex[x=2.5,y=0]{C}
+                        \Vertex[x=1.25,y=-2]{D}
+                        \Vertex[x=-1.25,y=-2]{E}
+                        \Vertex[x=-2.5,y=0]{F}
+                        \Vertex[x=-1.25,y=2]{G}
+                        \SetUpEdge[
+                            color = faded,
+                            labelstyle = {text=faded,fill=background}]
+                        \Edge[label=$3$](A)(B)
+                        \Edge[label=$4$](A)(D)
+                        \Edge[label=$7$](A)(F)
+                        \Edge[label=$3$](C)(D)
+                        \Edge[label=$8$](E)(F)
+                        \Edge[label=$6$](G)(B)
+                        \SetUpEdge[
+                            color = hilight,
+                            labelstyle = {text=hilight,fill=background}]
+                        \Edge[label=$2$](A)(C)
+                        \Edge[label=$3$](A)(E)
+                        \Edge[label=$6$](A)(G)
+                        \Edge[label=$2$](B)(C)
+                        \Edge[label=$1$](D)(E)
+                        \Edge[label=$6$](F)(G)
+                    \end{tikzpicture}
+                    \caption{spanning tree with cost of 20}
+                    \label{fig:hg:other}
+                \end{figure}
+            \end{minipage}
+            \vspace{0.5cm}
+
+            For this labling, the steps of the Kruskal's algorithm would look like this:
+            Pick any edge that has the minimal cost with at most one node in the current set.
+            \begin{enumerate}[label={\#\arabic*}]
+                \item Pick \((E,D)\).
+                \item Pick \((B,C)\).
+                \item Pick \((A,C)\).
+                \item Pick \((C,D)\).
+                \item Pick \((A,G)\).
+                \item Pick \((G,F)\).
+            \end{enumerate}
+            This spanning (shown in the figure \ref{fig:hg:main}) tree is not unique, we can see that there's at least one other spanning tree with the same cost in figure \ref{fig:hg:other}.
+        }
+        \item {
+            \begin{enumerate}
+                \item {
+                    Let \(V\) be the set of all vertices and \(E\) the edges of an undirected graph. Let \(S_i\) be the i-th connected component of \((V,E)\) and let \(S = \bigcup_{i=1}^n S_i\). Start by picking a vertex \(v_1\) from \(V\setminus S\) and put all the vertices visited by \(\dfs(v_1)\) into \(S_1\). Then, pick next vertex \(v_2\) from \(V\setminus S\) and put all the vertices visited by \(\dfs(v_2)\) into \(S_2\) and so on.
+                }
+                \item {
+                    We need to modify dfs a little for this task:
+                    \begin{displaymath}
+                        \dfs(v, V, D, E) = 
+                        \left(\concat_{u : \{u, v\} \in E, u \in V} \left((u) \circ \dfs(u, V \setminus \{u\}, D \cup \{u\}, E) \circ (u)\right)\right) \circ 
+                        \left(\concat_{u : \{u, v\} \in E, u \in D} \left(u, v\right)\right).
+                    \end{displaymath}
+                    This will traverse each edge once in each direction.
+                }
+            \end{enumerate}
+        }
+        \item {
+            \begin{enumerate}
+                \item Right here: \begin{displaymath}
+                    \begin{gathered}
+                        \vdots \\
+                        \begin{aligned}
+                            d^t[y] &= \delta[y] & \text{(above)} \\
+                            &{\color{hilight}\mbox{}\leq \delta[y]} & {\color{hilight}\text{(edge weights non-negative)}} \\
+                            &< d^t[u] & \text{(assumption)}
+                        \end{aligned} \\
+                        \vdots
+                    \end{gathered}
+                \end{displaymath}
+                \item {
+                    \begin{minipage}[t]{\linewidth}
+                        \begin{figure}[H]
+                            \centering
+                            \begin{tikzpicture}
+                                \tikzset{VertexStyle/.style =
+                                    {draw,
+                                    shape = circle,
+                                    color = text}}
+                                \SetUpEdge[
+                                    color = text,
+                                    labelcolor = white,
+                                    labeltext = red,
+                                    labelstyle = {text=text,fill=background}]
+
+                                \Vertex[x=0,y=0]{A}
+                                \Vertex[x=2,y=0]{B}
+                                \Vertex[x=4,y=0]{C}
+                                \Edge[label=$-2$](A)(B)
+                                \Edge[label=$1$](B)(C)
+                            \end{tikzpicture}
+                            \caption{An example of a graph with positive and negative edge weights, where
+                            Dijkstra’s algorithm gives the wrong answer}
+                            \label{fig:hg:main}
+                        \end{figure}
+                    \end{minipage}
+                }
+            \end{enumerate}
+        }
+    \end{tasks}
+\end{document}

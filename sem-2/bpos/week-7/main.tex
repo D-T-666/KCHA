@@ -1,0 +1,306 @@
+\documentclass{article}
+
+\usepackage[margin=3cm,top=3cm]{geometry}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{svg}
+\usepackage{fancyvrb}
+\usepackage{hyperref}
+\usepackage{refcount}
+\usepackage{mips}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{keyword}{rgb}{0.1,0.1,0.4}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{red}{rgb}{0,0.7,0.3}
+
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{keyword},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    % breakatwhitespace=false,         
+    % breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,         
+    showspaces=false,                
+    showstringspaces=false,
+    % showtabs=false,
+    frame=single,
+    numbersep=1.5em,
+    tabsize=6,
+	% bottom=0
+	escapechar=!,
+	belowskip=0em
+}
+
+\lstset{language=[mips]Assembler}
+\lstset{style=mystyle}
+
+\title{BPOS: Excercises for week 7}
+\author{student: Dimitri Tabatadze (group: G3)}
+
+\begin{document}
+    \maketitle
+	\pagebreak
+
+    \section*{Solutions}
+
+    \begin{enumerate}
+        \item {
+			% 1
+            I have adjusted the whitespaces to make the code look more readable and more navigable:
+
+            \begin{lstlisting}[language=c]
+int b;
+int y;
+
+int main() {
+    b = 5;
+    y = 11;
+    if b > 1 {
+        b = f1(b, b - 1)
+    };
+    return 0
+};
+
+int f1(int y, int z) {
+    while b > 0 { 
+        if y > 12 {
+            b = (y - 1) * f1(y - 1, y)
+        } else {
+            if y > 9 {
+                y = y - 1;
+                b = 5
+            } else {
+                b = 5;
+                y = y - 1
+            }
+        }
+    };
+    y = y - 1;
+    return b
+}\end{lstlisting}
+			
+			There are a couple problems with this code.
+
+			\begin{enumerate}[label={\arabic*.}]
+				\item Due to an invalid statement on line 16, the code won't compile. There is no production for that kind of a statement.
+				\item {Even though there are three subtrees with border words equal to \verb|y=y-1| (on lines 19, 23, 27), only one of them (line 23) will ever be reached.}
+			\end{enumerate}
+
+			If we don't ignore problem 1, this task will not be completable.
+			If we assume that all occurrences of \verb|y=y-1| are reachable, the program rests would look like this:
+
+            \begin{itemize}
+                \item {After line 19: $c'.pr = $
+					\
+					\begin{minipage}{0.5\linewidth}
+						\begin{lstlisting}[language=c,numbers=none,frame=single]
+b=5;while b>0{if y>12{b=(y-1)*f1(y-1,y)}
+else{if y>9{y=y-1;b=5}else{b=5;y=y-1}}};
+y=y-1;return b;return 0
+\end{lstlisting}
+					\end{minipage}
+				}
+                \item {After line 23: $c'.pr = $
+				\
+				\begin{minipage}{0.5\linewidth}
+					\begin{lstlisting}[language=c,numbers=none,frame=single]
+while b>0{if y>12{b=(y-1)*f1(y-1,y)}else{
+if y>9{y=y-1;b=5}else{b=5;y=y-1}}};y=y-1;
+return b;return 0
+\end{lstlisting}
+				\end{minipage}
+				}
+                \item {After line 27: $c'.pr = $
+					\ \begin{minipage}{0.5\linewidth}
+						\begin{lstlisting}[language=c,numbers=none,frame=single]
+return b;return 0\end{lstlisting}
+					\end{minipage}
+				}
+            \end{itemize}
+
+			If we count computations where $hd(c.pr):$ \verb|y=y-1| as \textbf{occurrences} of \verb|y=y-1|, then after the first three (and in fact all infinite* occurences), $c'.pr=ft(\verb|f1|).body$\verb|;return 0|
+        }
+        \pagebreak \item {
+			% 2
+            The expression to translate: \verb|z + x[z]|
+
+            \begin{displaymath}
+                \begin{aligned}
+                    displ(\texttt{z}, \$gm) &= size(vec) = (6 \cdot size(int))_{32} = (6 \cdot 4)_{32} = 24_{32} \\
+                    displ(\texttt{x}, \$gm) &= 0_{32} \\
+					size(int) &= 4 \\
+					enc(size(int),uint) &= enc(4,uint) = 4_{32} = 00000000000000000000000000000100
+                \end{aligned}
+            \end{displaymath}
+
+            The register \verb|bpt|, where the pointer to the start of the region where global memory is contained, is the register number 28\footnote{12.1.1 Memory Map. page 255.} which is called \verb|$gp| in MIPS.
+
+			Following the steps for translating variable names\footnote{12.2.6 Variable Names. page 291-293.}, array elements\footnote{12.2.8 Array Elements. page 294-295.} and binary arithmetic operations\footnote{\label{binary_arithmetic_operations_footnote}12.2.1 Binary Arithmetic Operations. page 298-299.}, we get the following MIPS code:
+
+            \begin{itemize}
+                \item {
+                    Load \verb|x[z]| into \verb|$t0|
+                    \lstinputlisting[lastline=7]{mips/2/unexpanded.asm}
+                }
+                \item {
+                    Load \verb|z| into \verb|$t1|
+                    \lstinputlisting[firstline=8,lastline=9,firstnumber=8]{mips/2/unexpanded.asm}
+                }
+                \item {
+                    perform addition
+                    \lstinputlisting[firstline=10,firstnumber=10]{mips/2/unexpanded.asm}
+                }
+            \end{itemize}
+
+			\paragraph{Expanding the macros and replacing variables}
+
+			\begin{itemize}
+				\item {
+					\begin{minipage}{0.55\linewidth}
+						\hfil
+						$\verb|gpr(k) = S|\rightarrow$
+						\begin{minipage}{3cm}
+							\begin{Verbatim}[tabsize=2,frame=leftline]
+lui k 0bS[31:16]
+ori k 0bS[15:0]
+\end{Verbatim}
+						\end{minipage}
+					\end{minipage}
+					\begin{minipage}{0.35\linewidth}
+						\lstinputlisting[]{mips/2/step-0.asm}
+					\end{minipage}
+				}
+				\item {
+					\begin{minipage}{0.55\linewidth}
+						\begin{displaymath}
+							\begin{aligned}
+								\verb|bpt| &\rightarrow \verb|$gp| \\
+								\verb|23| &\rightarrow \verb|$s7| \\
+								\verb|0| &\rightarrow \verb|$zero| \\
+							\end{aligned}
+						\end{displaymath}
+					\end{minipage}
+					\begin{minipage}{0.35\linewidth}
+						\lstinputlisting[]{mips/2/step-1.asm}
+					\end{minipage}
+				}
+				\item {
+					\begin{minipage}{0.55\linewidth}
+						\begin{displaymath}
+							\begin{aligned}
+								\verb|displ(x, $gm)| &\rightarrow \verb|0| \\
+								\verb|displ(z, $gm)| &\rightarrow \verb|24| \\
+								\verb|size(int)| &\rightarrow \verb|4|
+							\end{aligned}
+						\end{displaymath}
+					\end{minipage}
+					\begin{minipage}{0.35\linewidth}
+						\lstinputlisting[]{mips/2/step-2.asm}
+					\end{minipage}
+				}
+				\item {
+					\begin{minipage}{0.55\linewidth}
+						\begin{displaymath}
+							\begin{aligned}
+								\verb|deref(j)| &\rightarrow \verb|lw j j 0| 
+							\end{aligned}
+						\end{displaymath}
+					\end{minipage}
+					\begin{minipage}{0.35\linewidth}
+						\lstinputlisting[]{mips/2/step-3.asm}
+					\end{minipage}
+				}
+				\item {
+					Expanding software multiplication\footnote{9.2 Software Multiplication. page 147-148.} is a little more complex than the previous expansions. I follow the steps turning to get:
+
+					\begin{minipage}{0.55\linewidth}
+						\hfil
+						$\verb|mul(k, i, j)|\rightarrow$
+						\begin{minipage}{3cm}
+							\begin{Verbatim}[tabsize=2,frame=leftline]
+addi	24 0 1
+addi	26 i 0
+addi	27 0 0
+and 	25 j 24
+beq 	25 0 2
+add 	27 27 26
+add 	24 24 24
+add 	26 26 26
+bne 	24 0 -5
+addi	k 27 0
+\end{Verbatim}
+						\end{minipage}
+					\end{minipage}
+					\begin{minipage}{0.35\linewidth}
+						\lstinputlisting[]{mips/2/step-4.asm}
+					\end{minipage}
+
+					but here, we need to replace the numbers of the registers with the corresponding names:
+
+					\begin{minipage}{0.55\linewidth}
+						\begin{displaymath}
+							\begin{aligned}
+								\verb|0| &\rightarrow \verb|$zero| \\
+								\verb|24| &\rightarrow \verb|$t8| \\
+								\verb|25| &\rightarrow \verb|$t9| \\
+								\verb|26| &\rightarrow \verb|$k0| \\
+								\verb|27| &\rightarrow \verb|$k1|
+							\end{aligned}
+						\end{displaymath}
+					\end{minipage}
+					\begin{minipage}{0.35\linewidth}
+						\lstinputlisting[]{mips/2/step-5.asm}
+					\end{minipage}
+				}
+			\end{itemize}
+
+            And finaly, after expanding the macros and replacing the variables with their values we get the following MIPS code:
+
+			\lstinputlisting[]{mips/2/expanded.asm}
+        }
+        \pagebreak \item {
+			% 3
+			The expression to translate: \verb|while z>0 { z=z-2 }|
+            \begin{displaymath}
+                \begin{aligned}
+                    displ(\texttt{z}, \$gm) &= size(vec) = (6 \cdot size(int))_{32} = (6 \cdot 4)_{32} = 24_{32} \\
+					bw(n) &= \verb|while z>0 { z=z-2 }| \\
+					bw(n1) &= \verb|z>0| \\
+					bw(n3) &= \verb|z=z-2| \\
+                \end{aligned}
+            \end{displaymath}
+
+			Following the steps for translating a while loop\footnote{12.3.3 While Loop. page 305-307.}, comparison\footnote{12.2.13 Comparison. page 300.}, assignment\footnote{12.3.1 Assignment. page 303-304.} and binary arithmetic operations\footnotemark[\getrefnumber{binary_arithmetic_operations_footnote}], we get the following MIPS code:
+
+            \begin{itemize}
+                \item {
+                    \verb@code(n1)@
+                    \lstinputlisting[lastline=4]{mips/3/unexpanded.asm}
+					$j=\verb|$t0|$
+                }
+                \item {\verb@beqz j |code(n3)|+2@
+                    \lstinputlisting[firstnumber=5,firstline=5,lastline=5]{mips/3/unexpanded.asm}
+                }
+                \item {\verb@code(n3)@
+
+					The code for an assignment and an unary operation (with $\circ = -$)
+                    \lstinputlisting[firstnumber=6,firstline=6,lastline=11]{mips/3/unexpanded.asm}
+                }
+                \item {\verb@blez 0 -(|code(n1)|+|code(n3)|+1)@
+                    \lstinputlisting[firstnumber=12,firstline=12,lastline=12]{mips/3/unexpanded.asm}
+                }
+            \end{itemize}
+
+			I have ommited the steps (since it's basicaly the same as it was in the previous task), but after expanding the macros and replacing the variables with their values we get the following MIPS code:
+
+			\lstinputlisting{mips/3/expanded.asm}
+        }
+    \end{enumerate}
+\end{document}
