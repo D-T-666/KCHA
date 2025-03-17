@@ -1,7 +1,11 @@
-#import "@tcum/hw:0.1.2": *
+#import "@tcum/hw:0.2.0": *
 #import "@tcum/i2cn:0.1.0": *
 
-#show: hw
+#show: hw.with(
+  author: [Dimitri Tabatadze],
+  date: datetime.today().display(),
+  title: [I2CN exercise sheet 2]
+)
 
 #problem[Formalizing multisets][
   Formalize $S in MM(cal(M))$ as a mapping
@@ -44,10 +48,24 @@
     $ (S, c) attach(->, t: tilde, tr: s, br: p) (x, m, S) "and"
       ((e, T), m) attach(->, t: tilde, tr: r, br: q) (f, T union {m}) $
 
-  Specify for the simulating systems
-  1. The send transition $attach(->, t: tilde, tr: s, br: p)$.
-  2. The internal transition $attach(->, t: tilde, tr: i, br: p)$.
-    Hint: you need rules for the sim
+  Specify for the simulating system
+  1. the send transition $attach(->, t: tilde, tr: s, br: p)$.
+  2. the internal transition $attach(->, t: tilde, tr: i, br: p)$.
+    Hint: you need rules for the simulated internal step and
+    for the simulated receive steps.
+  3. State a simulation theorem between computations of the
+    two systems. Hint: don't forget to couple the start
+    configurations of the system in the simulation relation.
+]
+
+#solution[
+  1. For the send transition, we will have:
+    $  $
+    $ MG(c) = {(m, d) : c arr_p^s (c, m, d) "with" q = link_p (x) } $
+  2. For the receive transition, we will have:
+    $ (M, (z, S)) tack (z', S') $
+    iff
+    $ S' = M union cases() $
 ]
 
 #problem[Schedules][
@@ -101,20 +119,26 @@
 ]
 
 #solution[
+  There will be two stages for the algorithm: finding the leader,
+  announcing the leader. In the finding the leader stage, we will
+  do everything exactly as we did it before. In the announcing the
+  leader stage, the leader will send an announcement in both
+  directions. After receive the announcement, each node will
+  forward it and terminate immediately.
+
   1. The total number of messages sent can vary very much.
     - *Minimum:* if the UIDs are assigned in an _ascending_ order
       $ i < j -> u_i < u_j $ 
-      then the number of messages will be $N$.
+      then the number of messages will be $N + N$.
     - *Maximum:* if the UIDs are assigned in a _descending_ order
       $ i < j -> u_j < u_i $
-      then the number of messages sent will be $(N (N + 1)) / 2$.
+      then the number of messages sent will be $(N (N + 1)) / 2 + N$.
     So the general answer is $O(N^2)$.
   2. It will take $N$ rounds for the leader to receive their
     own UID and by that time the UID will have gone through
     every other node. However, for the other nodes to know to
     terminate, the leader should inform them somehow. This
     will take at least $ceil(N / 2)$ steps (that's the case
-    where the leader sends termination signals in both
-    directions). So in total $N + ceil(N/2)$ or $O(N)$ steps
-    should suffice.
+    where the leader sends termination signals in both directions).
+    So in total $N + ceil(N/2)$ or $O(N)$ steps should suffice.
 ]
