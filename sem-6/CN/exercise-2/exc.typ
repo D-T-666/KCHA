@@ -51,21 +51,26 @@
   Specify for the simulating system
   1. the send transition $attach(->, t: tilde, tr: s, br: p)$.
   2. the internal transition $attach(->, t: tilde, tr: i, br: p)$.
-    Hint: you need rules for the simulated internal step and
-    for the simulated receive steps.
-  3. State a simulation theorem between computations of the
-    two systems. Hint: don't forget to couple the start
-    configurations of the system in the simulation relation.
+  Hint: you need rules for the simulated internal step and
+  for the simulated receive steps.
+3. State a simulation theorem between computations of the
+  two systems. Hint: don't forget to couple the start
+  configurations of the system in the simulation relation.
 ]
 
 #solution[
   1. For the send transition, we will have:
-    $  $
-    $ MG(c) = {(m, d) : c arr_p^s (c, m, d) "with" q = link_p (x) } $
+    $ (c, S) attach(->, t: tilde, tr: s, br: p) ((x, S), m, d)
+      space &<==> space
+      c attach(->, tr: s, br: p) (x, m, d) $
   2. For the receive transition, we will have:
-    $ (M, (z, S)) tack (z', S') $
-    iff
-    $ S' = M union cases() $
+    $ (a, S) attach(->, t: tilde, tr: i, br: p) (b, S)
+      space &<==> space
+      a attach(->, tr: i, br: p) b $
+    and
+    $ ((e, S), m) attach(->, t: tilde, tr: r, br: p) (f, S union {m})
+      space &<==> space
+      (e, m) attach(->, tr: r, br: p) f $
 ]
 
 #problem[Schedules][
@@ -76,7 +81,11 @@
 
 #solution[
   This statement is false. Part 2 of exercise 2 of sheet 1
-  had us come up with a counterexample.
+  had us come up with a counterexample. But here it is again:
+
+  No matter what we do, the internal transition always picks
+  $0$ and puts it into $R$. This way, we'll always have 
+  $S subset {0, 1}$.
 ]
 
 #problem[Norm Functions][
